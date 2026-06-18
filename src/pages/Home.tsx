@@ -55,14 +55,18 @@ export function Home() {
       <div className="mb-6 grid gap-4">
         {topics.map((topic) => {
           const lessons = getLessons(topic.id);
+          const shown = lessons.slice(0, 12); // big bank — show the first dozen
           return (
             <div key={topic.id} className="rounded-3xl bg-white p-5 shadow-sm">
-              <div className="mb-3 flex items-center gap-3">
-                <span className="text-3xl">{topic.icon}</span>
-                <span className="text-xl font-bold text-slate-800">{topic.name}</span>
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{topic.icon}</span>
+                  <span className="text-xl font-bold text-slate-800">{topic.name}</span>
+                </div>
+                <span className="text-base text-slate-400">{lessons.length} שיעורים</span>
               </div>
               <div className="flex flex-wrap gap-3">
-                {lessons.map((_, i) => {
+                {shown.map((_, i) => {
                   const key = `${topic.id}:${i}`;
                   const stars = progress.stars[key] ?? 0;
                   return (

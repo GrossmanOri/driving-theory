@@ -1,17 +1,33 @@
 import type { Question, Topic } from './types';
 import { LESSON_SIZE } from './types';
-import { seedQuestions, topics } from './seed';
 
-// Single source of truth for the app. When the official bank is imported,
-// only this loader needs to point at the new data file.
-const allQuestions: Question[] = seedQuestions;
+// Topic config: maps each gov.il Hebrew category to a clean URL slug + icon.
+const TOPIC_CONFIG = [
+  { id: 'signs', category: 'תמרורים', name: 'תמרורים', icon: '🚸' },
+  { id: 'rules', category: 'חוקי התנועה', name: 'חוקי התנועה', icon: '🚦' },
+  { id: 'safety', category: 'בטיחות', name: 'בטיחות', icon: '🦺' },
+  { id: 'vehicle', category: 'הכרת הרכב', name: 'הכרת הרכב', icon: '🚗' },
+];
+
+const categoryToSlug = new Map(TOPIC_CONFIG.map((t) => [t.category, t.id]));
+
+// Questions are loaded from the API at startup, then cached here.
+let allQuestions: Question[] = [];
+
+/** Called once after fetching from the API. Remaps category -> topic slug. */
+export function setQuestions(questions: Question[]) {
+  allQuestions = questions.map((q) => ({
+    ...q,
+    topicId: categoryToSlug.get(q.topicId) ?? 'other',
+  }));
+}
 
 export function getTopics(): Topic[] {
-  return topics;
+  return TOPIC_CONFIG.map(({ id, name, icon }) => ({ id, name, icon }));
 }
 
 export function getTopic(id: string): Topic | undefined {
-  return topics.find((t) => t.id === id);
+  return getTopics().find((t) => t.id === id);
 }
 
 export function getAllQuestions(): Question[] {
@@ -46,27 +62,17 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 /**
- * Build an exam of `count` questions, weighting signs + right-of-way higher
- * (~35% of the pool, mirroring the real test emphasis).
+ * Build an exam of `count` questions, weighting signs + right-of-way topics
+ * higher (~35%), mirroring the real test emphasis.
  */
 export function buildExam(count = 30): Question[] {
-  const weighted = ['signs', 'rightofway'];
+  const weighted = ['signs', 'rules'];
   const priority = shuffle(allQuestions.filter((q) => weighted.includes(q.topicId)));
   const rest = shuffle(allQuestions.filter((q) => !weighted.includes(q.topicId)));
-
   const targetPriority = Math.round(count * 0.35);
   const picked = [
     ...priority.slice(0, targetPriority),
-    ...rest,
-    ...priority.slice(targetPriority),
+    ...shuffle([...priority.slice(targetPriority), ...rest]),
   ];
-
-  // With the small seed set we may have fewer than `count`; repeat-fill if needed.
-  const result: Question[] = [];
-  let i = 0;
-  while (result.length < count && picked.length > 0) {
-    result.push(picked[i % picked.length]);
-    i++;
-  }
-  return shuffle(result).slice(0, Math.min(count, picked.length || count));
+  return picked.slice(0, count);
 }
