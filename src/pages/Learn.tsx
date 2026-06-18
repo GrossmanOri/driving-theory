@@ -9,7 +9,7 @@ import { bumpDaily } from '../lib/dailyGoal';
 
 export function Learn() {
   const { topicId = '', lessonIndex = '0' } = useParams();
-  const { recordAnswer, recordLessonStars } = useProgressContext();
+  const { progress, recordAnswer, recordLessonStars } = useProgressContext();
 
   const topic = getTopic(topicId);
   const lessons = getLessons(topicId);
@@ -50,8 +50,10 @@ export function Learn() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <div className="rounded-3xl bg-white p-8 shadow-sm">
           <div className="mb-4 text-6xl">🎉</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800">סיימת את השיעור!</h2>
-          <p className="mb-5 text-xl text-slate-500">כל הכבוד שהתמדת — זה מה שחשוב.</p>
+          <h2 className="mb-2 text-3xl font-extrabold text-slate-800">
+            כל הכבוד{progress.name ? `, ${progress.name}` : ''}! 🎉
+          </h2>
+          <p className="mb-5 text-xl text-slate-500">סיימת את השיעור — זה מה שחשוב.</p>
           <div className="mb-6 flex justify-center">
             <Stars count={stars} size="text-5xl" />
           </div>

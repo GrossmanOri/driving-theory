@@ -3,6 +3,7 @@ import { getAllQuestions, getLessons, getTopics } from '../data/loader';
 import { useProgressContext } from '../hooks/ProgressContext';
 import { Stars } from '../components/Stars';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
+import { cheer, greeting } from '../lib/greeting';
 
 export function Home() {
   const { progress } = useProgressContext();
@@ -15,8 +16,8 @@ export function Home() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="mb-1 text-3xl font-extrabold text-slate-800">היי! 👋</h1>
-      <p className="mb-5 text-xl text-slate-500">בואי נלמד קצת לתיאוריה, בלי לחץ.</p>
+      <h1 className="mb-1 text-3xl font-extrabold text-slate-800">{greeting(progress.name)} 👋</h1>
+      <p className="mb-5 text-xl text-slate-500">{cheer(new Date().getDate())}</p>
 
       {/* Daily goal */}
       <div className="mb-5 rounded-3xl bg-gradient-to-l from-amber-100 to-amber-50 p-5">

@@ -116,6 +116,7 @@ export function Exam() {
         <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
           <div className="mb-3 text-6xl">{result.passed ? '🎉' : '💪'}</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800">
+            {progress.name ? `${progress.name}, ` : ''}
             {result.passed ? 'עברת! מדהים!' : 'כל הכבוד שסיימת!'}
           </h2>
           <p className="mb-4 text-2xl font-bold text-slate-700">

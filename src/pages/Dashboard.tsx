@@ -3,6 +3,7 @@ import { getAllQuestions, getQuestionById, getQuestionsByTopic, getTopics } from
 import { useProgressContext } from '../hooks/ProgressContext';
 import { isDue } from '../lib/leitner';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
+import { greeting } from '../lib/greeting';
 
 function Ring({ pct }: { pct: number }) {
   const r = 52;
@@ -65,7 +66,8 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="mb-5 text-3xl font-extrabold text-slate-800">הלוח שלי 📊</h1>
+      <h1 className="mb-1 text-3xl font-extrabold text-slate-800">{greeting(progress.name)} 📊</h1>
+      <p className="mb-5 text-lg text-slate-500">הנה כמה רחוק הגעת</p>
 
       {/* What you did */}
       <div className="mb-6 flex items-center gap-5 rounded-3xl bg-white p-5 shadow-sm">

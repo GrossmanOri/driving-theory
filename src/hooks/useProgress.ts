@@ -5,6 +5,7 @@ import { fetchProgress, saveProgress } from '../lib/api';
 import type { ProgressItem } from '../lib/api';
 
 export interface Progress {
+  name: string;
   points: number;
   cards: Record<string, CardState>;
   mistakes: string[];
@@ -14,6 +15,7 @@ export interface Progress {
 }
 
 const defaultProgress: Progress = {
+  name: '',
   points: 0,
   cards: {},
   mistakes: [],
@@ -27,6 +29,7 @@ function fromItems(items: ProgressItem[]): Progress {
   const p: Progress = { ...defaultProgress, cards: {}, mistakes: [], mastered: [], stars: {} };
   for (const it of items) {
     if (it.sk === 'PROFILE') {
+      p.name = (it.name as string) ?? '';
       p.points = (it.points as number) ?? 0;
       p.settings = { ...defaultProgress.settings, ...(it.settings as object) };
     } else if (it.sk.startsWith('Q#')) {
@@ -85,8 +88,19 @@ export function useProgress() {
   }, [progress.settings.fontSizePx]);
 
   const queueProfile = useCallback(
-    (p: Progress) => queue({ sk: 'PROFILE', points: p.points, settings: p.settings }),
+    (p: Progress) => queue({ sk: 'PROFILE', name: p.name, points: p.points, settings: p.settings }),
     [queue],
+  );
+
+  const setName = useCallback(
+    (name: string) => {
+      setProgress((prev) => {
+        const next = { ...prev, name };
+        queueProfile(next);
+        return next;
+      });
+    },
+    [queueProfile],
   );
 
   const recordAnswer = useCallback(
@@ -157,5 +171,5 @@ export function useProgress() {
 
   const totalStars = Object.values(progress.stars).reduce((a, b) => a + b, 0);
 
-  return { progress, loaded, recordAnswer, recordLessonStars, setFontSize, setExamTimer, totalStars };
+  return { progress, loaded, setName, recordAnswer, recordLessonStars, setFontSize, setExamTimer, totalStars };
 }
