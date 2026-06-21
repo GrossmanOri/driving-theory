@@ -105,6 +105,18 @@ export function Home() {
           )}
         </Link>
         <Link
+          to="/collection"
+          className="rounded-3xl bg-amber-400 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-amber-500"
+        >
+          🚸 אוסף התמרורים
+        </Link>
+        <Link
+          to="/dashboard"
+          className="rounded-3xl bg-emerald-400 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-emerald-500"
+        >
+          📊 הלוח שלי
+        </Link>
+        <Link
           to="/settings"
           className="rounded-3xl bg-slate-200 p-5 text-center text-xl font-bold text-slate-700 shadow-sm hover:bg-slate-300"
         >

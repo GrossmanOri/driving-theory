@@ -103,6 +103,18 @@ export function useProgress() {
     [queueProfile],
   );
 
+  // Variable surprise reward — extra points on a lucky correct answer.
+  const addBonus = useCallback(
+    (pts: number) => {
+      setProgress((prev) => {
+        const next = { ...prev, points: prev.points + pts };
+        queueProfile(next);
+        return next;
+      });
+    },
+    [queueProfile],
+  );
+
   const recordAnswer = useCallback(
     (questionId: string, correct: boolean, firstTry: boolean): number => {
       let awarded = 0;
@@ -171,5 +183,15 @@ export function useProgress() {
 
   const totalStars = Object.values(progress.stars).reduce((a, b) => a + b, 0);
 
-  return { progress, loaded, setName, recordAnswer, recordLessonStars, setFontSize, setExamTimer, totalStars };
+  return {
+    progress,
+    loaded,
+    setName,
+    addBonus,
+    recordAnswer,
+    recordLessonStars,
+    setFontSize,
+    setExamTimer,
+    totalStars,
+  };
 }

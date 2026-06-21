@@ -4,6 +4,8 @@ import { useProgressContext } from '../hooks/ProgressContext';
 import { isDue } from '../lib/leitner';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
 import { greeting } from '../lib/greeting';
+import { levelInfo } from '../lib/levels';
+import { getStreak } from '../lib/streak';
 
 function Ring({ pct }: { pct: number }) {
   const r = 52;
@@ -49,6 +51,8 @@ export function Dashboard() {
     ([id, card]) => getQuestionById(id) && isDue(card) && !progress.mastered.includes(id),
   ).length;
   const daily = Math.min(getDailyCount(), DAILY_GOAL);
+  const level = levelInfo(progress.points);
+  const streak = getStreak();
 
   // Sign collection.
   const signs = getQuestionsByTopic('signs').filter((q) => q.imageUrl);
@@ -79,6 +83,31 @@ export function Dashboard() {
             <span className="rounded-full bg-amber-50 px-3 py-1 text-amber-600">⭐ {totalStars}</span>
             <span className="rounded-full bg-green-50 px-3 py-1 text-green-600">{progress.points} נק׳</span>
           </div>
+        </div>
+      </div>
+
+      {/* Level + streak */}
+      <div className="mb-6 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-3xl bg-gradient-to-br from-sky-500 to-emerald-500 p-5 text-white shadow-sm sm:col-span-2">
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-xl font-extrabold">
+              {level.rank.icon} {level.rank.name}
+            </span>
+            <span className="text-base opacity-90">דרגה {level.levelNumber}</span>
+          </div>
+          <div className="mt-2 h-3 overflow-hidden rounded-full bg-white/30">
+            <div className="h-full rounded-full bg-white" style={{ width: `${level.progressPct}%` }} />
+          </div>
+          <p className="mt-2 text-sm opacity-90">
+            {level.next
+              ? `עוד ${level.xpForLevel - level.xpIntoLevel} נק׳ ל"${level.next.name}"`
+              : 'הגעת לדרגה הגבוהה ביותר! 🏆'}
+          </p>
+        </div>
+        <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-5 shadow-sm">
+          <div className="text-4xl">🔥</div>
+          <div className="text-3xl font-extrabold text-orange-500">{streak}</div>
+          <div className="text-base text-slate-500">ימים ברצף</div>
         </div>
       </div>
 
@@ -125,11 +154,11 @@ export function Dashboard() {
       </div>
 
       {/* Sign collection */}
-      <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm">
+      <Link to="/collection" className="mb-6 block rounded-3xl bg-white p-5 shadow-sm transition hover:shadow-md">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-lg font-bold text-slate-700">🚸 אוסף התמרורים</span>
           <span className="text-base text-slate-500">
-            {signsCollected}/{signs.length}
+            {signsCollected}/{signs.length} ←
           </span>
         </div>
         <div className="h-3 overflow-hidden rounded-full bg-slate-100">
@@ -138,7 +167,7 @@ export function Dashboard() {
             style={{ width: `${signs.length ? (signsCollected / signs.length) * 100 : 0}%` }}
           />
         </div>
-      </div>
+      </Link>
 
       {/* Rewards */}
       <h2 className="mb-3 text-2xl font-bold text-slate-800">הישגים 🎖️</h2>

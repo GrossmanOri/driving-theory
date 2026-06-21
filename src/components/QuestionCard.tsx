@@ -9,6 +9,8 @@ interface Props {
   onNext: (firstTryCorrect: boolean) => void;
   /** Award points immediately (learn mode). Returns points awarded. */
   onAward?: (questionId: string, correct: boolean, firstTry: boolean) => number;
+  /** Grant a surprise bonus (learn mode only). */
+  onBonus?: (points: number) => void;
   /** Exam mode: lock in the first answer, no retry, muted feedback. */
   examMode?: boolean;
   /** Label for the advance button. */
@@ -24,13 +26,14 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export function QuestionCard({ question, onNext, onAward, examMode = false, nextLabel = 'המשך' }: Props) {
+export function QuestionCard({ question, onNext, onAward, onBonus, examMode = false, nextLabel = 'המשך' }: Props) {
   const options = useMemo(() => shuffle(question.options), [question.id]);
   const [selected, setSelected] = useState<string | null>(null);
   const [hadMistake, setHadMistake] = useState(false);
   const [resolved, setResolved] = useState(false);
   const [shakeId, setShakeId] = useState<string | null>(null);
   const [floatPoints, setFloatPoints] = useState<number | null>(null);
+  const [bonus, setBonus] = useState(false);
   const [altExplain, setAltExplain] = useState(false);
 
   const handleSelect = (optId: string) => {
@@ -49,10 +52,17 @@ export function QuestionCard({ question, onNext, onAward, examMode = false, next
       setSelected(optId);
       setResolved(true);
       const pts = onAward?.(question.id, true, firstTry) ?? 0;
-      if (pts > 0) {
+      // ~15% lucky surprise bonus on a clean first-try answer.
+      const lucky = firstTry && pts > 0 && onBonus && Math.random() < 0.15;
+      if (lucky) {
+        onBonus!(pts); // double it
+        setBonus(true);
+        setFloatPoints(pts * 2);
+        setTimeout(() => setBonus(false), 1500);
+      } else if (pts > 0) {
         setFloatPoints(pts);
-        setTimeout(() => setFloatPoints(null), 1000);
       }
+      if (pts > 0) setTimeout(() => setFloatPoints(null), 1200);
       celebrate();
     } else {
       // Gentle: light shake, encouraging message, let her try again.
@@ -122,10 +132,13 @@ export function QuestionCard({ question, onNext, onAward, examMode = false, next
         })}
       </div>
 
-      {/* Floating +points */}
+      {/* Floating +points (with surprise bonus) */}
       {floatPoints !== null && (
-        <div className="pointer-events-none absolute left-1/2 top-32 -translate-x-1/2 animate-float-up text-3xl font-extrabold text-green-500">
-          +{floatPoints}
+        <div className="pointer-events-none absolute left-1/2 top-28 z-10 -translate-x-1/2 animate-float-up text-center">
+          {bonus && <div className="text-xl font-extrabold text-amber-500">בונוס מזל! ✨ ×2</div>}
+          <div className={`text-3xl font-extrabold ${bonus ? 'text-amber-500' : 'text-green-500'}`}>
+            +{floatPoints}
+          </div>
         </div>
       )}
 

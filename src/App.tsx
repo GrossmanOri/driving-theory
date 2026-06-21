@@ -12,6 +12,7 @@ import { Mistakes } from './pages/Mistakes';
 import { Exam } from './pages/Exam';
 import { Settings } from './pages/Settings';
 import { Dashboard } from './pages/Dashboard';
+import { Collection } from './pages/Collection';
 
 function OnboardingGate() {
   const { progress, loaded } = useProgressContext();
@@ -30,6 +31,7 @@ function OnboardingGate() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/collection" element={<Collection />} />
           <Route path="/learn/:topicId/:lessonIndex" element={<Learn />} />
           <Route path="/mistakes" element={<Mistakes />} />
           <Route path="/exam" element={<Exam />} />

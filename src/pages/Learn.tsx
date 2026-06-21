@@ -6,10 +6,11 @@ import { QuestionCard } from '../components/QuestionCard';
 import { Stars } from '../components/Stars';
 import { bigCelebrate } from '../components/confetti';
 import { bumpDaily } from '../lib/dailyGoal';
+import { recordActivity } from '../lib/streak';
 
 export function Learn() {
   const { topicId = '', lessonIndex = '0' } = useParams();
-  const { progress, recordAnswer, recordLessonStars } = useProgressContext();
+  const { progress, recordAnswer, recordLessonStars, addBonus } = useProgressContext();
 
   const topic = getTopic(topicId);
   const lessons = getLessons(topicId);
@@ -33,6 +34,7 @@ export function Learn() {
 
   const handleNext = (firstTryCorrect: boolean) => {
     bumpDaily();
+    recordActivity();
     const newFirstTry = firstTryCount + (firstTryCorrect ? 1 : 0);
     setFirstTryCount(newFirstTry);
 
@@ -100,6 +102,7 @@ export function Learn() {
         key={lesson[index].id}
         question={lesson[index]}
         onAward={recordAnswer}
+        onBonus={addBonus}
         onNext={handleNext}
         nextLabel={index + 1 < lesson.length ? 'לשאלה הבאה' : 'סיום השיעור'}
       />

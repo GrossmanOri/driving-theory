@@ -4,9 +4,10 @@ import { getQuestionById } from '../data/loader';
 import { useProgressContext } from '../hooks/ProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bumpDaily } from '../lib/dailyGoal';
+import { recordActivity } from '../lib/streak';
 
 export function Mistakes() {
-  const { progress, recordAnswer } = useProgressContext();
+  const { progress, recordAnswer, addBonus } = useProgressContext();
   // Snapshot at mount so the list doesn't shrink under us as we fix them.
   const questions = useMemo(
     () => progress.mistakes.map(getQuestionById).filter(Boolean),
@@ -38,6 +39,7 @@ export function Mistakes() {
 
   const handleNext = () => {
     bumpDaily();
+    recordActivity();
     if (index + 1 < questions.length) setIndex(index + 1);
     else setDone(true);
   };
@@ -54,6 +56,7 @@ export function Mistakes() {
         key={questions[index].id}
         question={questions[index]}
         onAward={recordAnswer}
+        onBonus={addBonus}
         onNext={handleNext}
         nextLabel={index + 1 < questions.length ? 'הבא' : 'סיום'}
       />
