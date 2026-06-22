@@ -5,6 +5,7 @@ import { buildExam } from '../data/loader';
 import { useProgressContext } from '../hooks/ProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bigCelebrate } from '../components/confetti';
+import { saveExam, getExams, readiness } from '../lib/examHistory';
 
 const EXAM_COUNT = 30;
 const PASS_MARK = 26;
@@ -68,23 +69,54 @@ export function Exam() {
   }, [answers]);
 
   useEffect(() => {
-    if (phase === 'result' && result.passed) bigCelebrate();
+    if (phase === 'result') {
+      saveExam(result.correct, result.total);
+      if (result.passed) bigCelebrate();
+    }
   }, [phase]);
 
   // --- INTRO ---
   if (phase === 'intro') {
+    const exams = getExams();
+    const ready = readiness();
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
           <div className="mb-3 text-center text-6xl">🎓</div>
-          <h2 className="mb-3 text-center text-3xl font-extrabold text-slate-800 dark:text-slate-100">מבחן דמה</h2>
+          <h2 className="mb-1 text-center text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+            מבחן תיאוריה מלא
+          </h2>
+          <p className="mb-5 text-center text-base text-slate-500 dark:text-slate-400">
+            מבחן חדש בכל פעם — בדיוק כמו המבחן האמיתי
+          </p>
+
+          {/* Readiness + best score */}
+          {exams.best && (
+            <div className="mb-5 rounded-2xl bg-gradient-to-l from-sky-50 to-emerald-50 p-4 dark:from-sky-500/10 dark:to-emerald-500/10">
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-base font-bold text-slate-700 dark:text-slate-200">המוכנות שלך</span>
+                <span className="text-base font-bold text-sky-600 dark:text-sky-300">{ready}%</span>
+              </div>
+              <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-slate-700">
+                <div
+                  className={`h-full rounded-full transition-all ${ready >= 87 ? 'bg-green-400' : 'bg-sky-400'}`}
+                  style={{ width: `${ready}%` }}
+                />
+              </div>
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                התוצאה הכי טובה: {exams.best.correct}/{EXAM_COUNT}
+                {exams.passes ? ` · עברת ${exams.passes} פעמים 🏆` : ''}
+              </p>
+            </div>
+          )}
+
           <ul className="mb-6 space-y-2 text-lg text-slate-600 dark:text-slate-300">
-            <li>📋 {EXAM_COUNT} שאלות</li>
+            <li>📋 {EXAM_COUNT} שאלות אקראיות — שונות בכל מבחן</li>
             <li>✅ עוברים עם {PASS_MARK} תשובות נכונות (עד 4 טעויות)</li>
-            <li>⏱️ 40 דקות — אפשר לכבות את הטיימר</li>
-            <li>💛 זה רק תרגול. גם אם לא עוברים — לומדים מזה.</li>
+            <li>⏱️ 40 דקות — כמו במבחן האמיתי</li>
+            <li>💛 גם אם לא עוברים — לומדים מזה.</li>
           </ul>
-          <label className="mb-6 flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+          <label className="mb-6 flex items-center justify-between rounded-2xl bg-slate-50 p-4 dark:bg-slate-700">
             <span className="text-lg font-bold text-slate-700 dark:text-slate-200">טיימר פעיל</span>
             <button
               onClick={() => setExamTimer(!timerOn)}

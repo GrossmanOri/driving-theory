@@ -137,10 +137,10 @@ export function Dashboard() {
       {/* What's next */}
       <h2 className="mb-3 text-2xl font-bold text-slate-800 dark:text-slate-100">מה הלאה</h2>
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl bg-purple-50 p-4 text-center">
-          <div className="text-3xl font-extrabold text-purple-600">{dueCount}</div>
-          <div className="text-base text-slate-600 dark:text-slate-300">לחזרה היום</div>
-        </div>
+        <Link to="/review" className="rounded-2xl bg-purple-50 p-4 text-center hover:bg-purple-100 dark:bg-purple-500/15">
+          <div className="text-3xl font-extrabold text-purple-600 dark:text-purple-300">{dueCount}</div>
+          <div className="text-base text-slate-600 dark:text-slate-300">לחזרה חכמה</div>
+        </Link>
         <Link to="/mistakes" className="rounded-2xl bg-amber-50 p-4 text-center hover:bg-amber-100">
           <div className="text-3xl font-extrabold text-amber-600">{progress.mistakes.length}</div>
           <div className="text-base text-slate-600 dark:text-slate-300">טעויות לתרגל</div>

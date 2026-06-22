@@ -51,6 +51,18 @@ export function Home() {
         </p>
       </div>
 
+      {/* Full theory test — prominent CTA */}
+      <Link
+        to="/exam"
+        className="mb-6 flex items-center justify-between rounded-3xl bg-gradient-to-l from-sky-500 to-indigo-500 p-5 text-white shadow-md transition hover:from-sky-600 hover:to-indigo-600"
+      >
+        <div>
+          <div className="text-2xl font-extrabold">🎓 מבחן תיאוריה מלא</div>
+          <div className="text-base opacity-90">30 שאלות, 40 דקות — חדש בכל פעם</div>
+        </div>
+        <span className="text-3xl">←</span>
+      </Link>
+
       {/* Topic map */}
       <h2 className="mb-3 text-2xl font-bold text-slate-800 dark:text-slate-100">הנושאים</h2>
       <div className="mb-6 grid gap-4">
@@ -90,10 +102,10 @@ export function Home() {
       {/* Modes */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Link
-          to="/exam"
+          to="/review"
           className="rounded-3xl bg-sky-500 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-sky-600"
         >
-          🎓 מבחן דמה
+          🔄 חזרה חכמה
         </Link>
         <Link
           to="/mistakes"
