@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/AuthContext';
 import { ProgressProvider, useProgressContext } from './hooks/ProgressContext';
 import { AppGate } from './components/AppGate';
+import { setGender } from './lib/gender';
 import { TopBar } from './components/TopBar';
 import { AuthScreen } from './pages/AuthScreen';
 import { Onboarding } from './pages/Onboarding';
@@ -17,12 +18,15 @@ import { Collection } from './pages/Collection';
 function OnboardingGate() {
   const { progress, loaded } = useProgressContext();
 
+  // Drive Hebrew grammar from the user's gender before any page renders.
+  setGender(progress.gender);
+
   if (!loaded) {
     return (
       <div className="flex min-h-screen items-center justify-center text-2xl text-slate-400">🚗</div>
     );
   }
-  if (!progress.name) return <Onboarding />;
+  if (!progress.name || !progress.gender) return <Onboarding />;
 
   return (
     <BrowserRouter>

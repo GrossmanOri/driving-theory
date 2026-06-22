@@ -27,7 +27,7 @@ export function Mistakes() {
             {questions.length === 0 ? 'אין טעויות לתרגל!' : 'תרגלת את כל הטעויות!'}
           </h2>
           <p className="mb-6 text-xl text-slate-500">
-            {questions.length === 0 ? 'את במצב מצוין. אפשר ללמוד נושא חדש.' : 'כל פעם שחוזרים על משהו, הוא נדבק יותר טוב.'}
+            {questions.length === 0 ? 'מצב מצוין! אפשר ללמוד נושא חדש.' : 'כל פעם שחוזרים על משהו, הוא נדבק יותר טוב.'}
           </p>
           <Link to="/" className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600">
             חזרה לבית

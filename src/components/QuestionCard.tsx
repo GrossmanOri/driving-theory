@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Question } from '../data/types';
 import { speak, speechSupported } from '../lib/speech';
+import { gw } from '../lib/gender';
 import { celebrate } from './confetti';
 
 interface Props {
@@ -95,7 +96,7 @@ export function QuestionCard({ question, onNext, onAward, onBonus, examMode = fa
             onClick={() => speak(question.text)}
             className="shrink-0 rounded-full bg-sky-50 px-3 py-2 text-xl text-sky-600 hover:bg-sky-100"
             aria-label="הקראת השאלה"
-            title="הקריאי לי"
+            title={`${gw('הקריאי', 'הקרא')} לי`}
           >
             🔊
           </button>
@@ -144,7 +145,9 @@ export function QuestionCard({ question, onNext, onAward, onBonus, examMode = fa
 
       {/* Gentle retry message */}
       {!examMode && hadMistake && !resolved && (
-        <p className="mt-4 text-center text-xl font-semibold text-amber-600">כמעט! נסי שוב 💛</p>
+        <p className="mt-4 text-center text-xl font-semibold text-amber-600">
+          כמעט! {gw('נסי', 'נסה')} שוב 💛
+        </p>
       )}
 
       {/* Explanation after resolving (learn mode) */}
@@ -159,14 +162,14 @@ export function QuestionCard({ question, onNext, onAward, onBonus, examMode = fa
                 onClick={() => speak(question.explanation)}
                 className="rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100"
               >
-                🔊 הקריאי לי
+                🔊 {gw('הקריאי', 'הקרא')} לי
               </button>
             )}
             <button
               onClick={() => setAltExplain((v) => !v)}
               className="rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100"
             >
-              💡 תסבירי לי אחרת
+              💡 {gw('תסבירי', 'תסביר')} לי אחרת
             </button>
           </div>
         </div>

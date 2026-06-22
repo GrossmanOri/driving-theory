@@ -1,4 +1,5 @@
 // Driving-themed rank progression. XP is simply the user's points.
+import { gw } from './gender';
 
 export interface Rank {
   name: string;
@@ -6,14 +7,18 @@ export interface Rank {
   minXp: number;
 }
 
-export const RANKS: Rank[] = [
-  { name: 'לומדת חדשה', icon: '🌱', minXp: 0 },
-  { name: 'מתאמנת', icon: '🚸', minXp: 100 },
-  { name: 'נהגת זהירה', icon: '🚗', minXp: 300 },
-  { name: 'נהגת מנוסה', icon: '🛣️', minXp: 700 },
-  { name: 'כמעט מוכנה', icon: '🏁', minXp: 1500 },
-  { name: 'אלופת התיאוריה', icon: '🏆', minXp: 3000 },
-];
+// Rank names adapt to gender (gw = female, male). Built fresh each call,
+// since gender is only known after the profile loads.
+export function getRanks(): Rank[] {
+  return [
+    { name: gw('לומדת חדשה', 'לומד חדש'), icon: '🌱', minXp: 0 },
+    { name: gw('מתאמנת', 'מתאמן'), icon: '🚸', minXp: 100 },
+    { name: gw('נהגת זהירה', 'נהג זהיר'), icon: '🚗', minXp: 300 },
+    { name: gw('נהגת מנוסה', 'נהג מנוסה'), icon: '🛣️', minXp: 700 },
+    { name: gw('כמעט מוכנה', 'כמעט מוכן'), icon: '🏁', minXp: 1500 },
+    { name: gw('אלופת התיאוריה', 'אלוף התיאוריה'), icon: '🏆', minXp: 3000 },
+  ];
+}
 
 export interface LevelInfo {
   rank: Rank;
@@ -25,12 +30,13 @@ export interface LevelInfo {
 }
 
 export function levelInfo(xp: number): LevelInfo {
+  const ranks = getRanks();
   let idx = 0;
-  for (let i = 0; i < RANKS.length; i++) {
-    if (xp >= RANKS[i].minXp) idx = i;
+  for (let i = 0; i < ranks.length; i++) {
+    if (xp >= ranks[i].minXp) idx = i;
   }
-  const rank = RANKS[idx];
-  const next = idx < RANKS.length - 1 ? RANKS[idx + 1] : null;
+  const rank = ranks[idx];
+  const next = idx < ranks.length - 1 ? ranks[idx + 1] : null;
   const xpIntoLevel = xp - rank.minXp;
   const xpForLevel = next ? next.minXp - rank.minXp : 0;
   const progressPct = next ? Math.min(100, Math.round((xpIntoLevel / xpForLevel) * 100)) : 100;

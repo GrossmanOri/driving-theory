@@ -125,7 +125,7 @@ export function Exam() {
           <p className="mb-6 text-lg text-slate-500">
             {result.passed
               ? `מעל ${PASS_MARK} — בדיוק מה שצריך במבחן האמיתי.`
-              : `צריך ${PASS_MARK} כדי לעבור. עוד קצת תרגול ואת שם 💛`}
+              : `צריך ${PASS_MARK} כדי לעבור. עוד קצת תרגול וזה אצלך בכיס 💛`}
           </p>
 
           {missed.length > 0 && (

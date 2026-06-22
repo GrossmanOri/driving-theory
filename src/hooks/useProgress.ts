@@ -6,6 +6,7 @@ import type { ProgressItem } from '../lib/api';
 
 export interface Progress {
   name: string;
+  gender: 'f' | 'm' | '';
   points: number;
   cards: Record<string, CardState>;
   mistakes: string[];
@@ -16,6 +17,7 @@ export interface Progress {
 
 const defaultProgress: Progress = {
   name: '',
+  gender: '',
   points: 0,
   cards: {},
   mistakes: [],
@@ -30,6 +32,7 @@ function fromItems(items: ProgressItem[]): Progress {
   for (const it of items) {
     if (it.sk === 'PROFILE') {
       p.name = (it.name as string) ?? '';
+      p.gender = (it.gender as 'f' | 'm' | '') ?? '';
       p.points = (it.points as number) ?? 0;
       p.settings = { ...defaultProgress.settings, ...(it.settings as object) };
     } else if (it.sk.startsWith('Q#')) {
@@ -88,14 +91,15 @@ export function useProgress() {
   }, [progress.settings.fontSizePx]);
 
   const queueProfile = useCallback(
-    (p: Progress) => queue({ sk: 'PROFILE', name: p.name, points: p.points, settings: p.settings }),
+    (p: Progress) =>
+      queue({ sk: 'PROFILE', name: p.name, gender: p.gender, points: p.points, settings: p.settings }),
     [queue],
   );
 
-  const setName = useCallback(
-    (name: string) => {
+  const setProfile = useCallback(
+    (name: string, gender: 'f' | 'm') => {
       setProgress((prev) => {
-        const next = { ...prev, name };
+        const next = { ...prev, name, gender };
         queueProfile(next);
         return next;
       });
@@ -186,7 +190,7 @@ export function useProgress() {
   return {
     progress,
     loaded,
-    setName,
+    setProfile,
     addBonus,
     recordAnswer,
     recordLessonStars,

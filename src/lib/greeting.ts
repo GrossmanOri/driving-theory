@@ -6,13 +6,14 @@ export function greeting(name?: string): string {
 }
 
 // A short rotating word of encouragement (kept positive, never pressuring).
-const CHEERS = [
-  'כל יום של תרגול מקרב אותך לרישיון 🚗',
-  'אין לחץ — בקצב שלך 💛',
-  'גם חמש דקות זה התקדמות 🌱',
-  'את לומדת מצוין, ממשיכים 💪',
-];
+import { gw } from './gender';
 
 export function cheer(seed = 0): string {
-  return CHEERS[seed % CHEERS.length];
+  const cheers = [
+    'כל יום של תרגול מקרב אותך לרישיון 🚗',
+    'אין לחץ — בקצב שלך 💛',
+    'גם חמש דקות זה התקדמות 🌱',
+    gw('את לומדת מצוין, ממשיכים 💪', 'אתה לומד מצוין, ממשיכים 💪'),
+  ];
+  return cheers[seed % cheers.length];
 }

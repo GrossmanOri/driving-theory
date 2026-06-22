@@ -32,7 +32,7 @@ export function Collection() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <h1 className="mb-1 text-3xl font-extrabold text-slate-800">אוסף התמרורים 🚸</h1>
-      <p className="mb-4 text-lg text-slate-500">כל תמרור שתשלטי בו — נצבע ונכנס לאוסף!</p>
+      <p className="mb-4 text-lg text-slate-500">כל תמרור ששולטים בו — נצבע ונכנס לאוסף!</p>
 
       <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm">
         <div className="mb-2 flex items-center justify-between">

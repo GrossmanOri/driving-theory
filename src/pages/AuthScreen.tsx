@@ -9,9 +9,9 @@ function friendlyError(e: unknown): string {
   const name = (e as { name?: string })?.name || '';
   const msg = (e as { message?: string })?.message || '';
   if (name === 'UserNotConfirmedException') return 'צריך לאמת את המייל קודם — שלחנו לך קוד.';
-  if (name === 'NotAuthorizedException') return 'אימייל או סיסמה לא נכונים. נסי שוב 💛';
+  if (name === 'NotAuthorizedException') return 'אימייל או סיסמה לא נכונים. כדאי לנסות שוב 💛';
   if (name === 'UsernameExistsException') return 'כבר קיים חשבון עם המייל הזה. אפשר להתחבר.';
-  if (name === 'CodeMismatchException') return 'הקוד לא נכון. בדקי שוב את המייל.';
+  if (name === 'CodeMismatchException') return 'הקוד לא נכון. כדאי לבדוק שוב את המייל.';
   if (name === 'InvalidPasswordException' || /password/i.test(msg))
     return 'הסיסמה צריכה לפחות 8 תווים, עם אות גדולה, אות קטנה, מספר וסימן.';
   if (name === 'LimitExceededException') return 'יותר מדי ניסיונות. כדאי לחכות רגע.';
@@ -85,7 +85,7 @@ export function AuthScreen() {
     mode === 'signUp' ? 'יוצרים חשבון חדש' : mode === 'confirm' ? 'אימות המייל' : 'כיף שחזרת!';
   const subtitle =
     mode === 'confirm'
-      ? `הכניסי את הקוד ששלחנו ל־${email}`
+      ? `הקוד נשלח אל ${email}`
       : 'הדרך הכי נעימה ללמוד לתיאוריה';
 
   return (
@@ -171,7 +171,7 @@ export function AuthScreen() {
                 placeholder="------"
               />
               <p className="rounded-xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700">
-                📨 לא רואה את המייל? בדקי בתיקיית הספאם / "דואר זבל" — לפעמים הוא מגיע לשם.
+                📨 לא רואים את המייל? כדאי לבדוק בתיקיית הספאם / "דואר זבל" — לפעמים הוא מגיע לשם.
               </p>
               <button
                 onClick={() => run(() => resend(email.trim()).then(() => setInfo('שלחנו קוד חדש 📧')))}
