@@ -19,6 +19,18 @@ export function Home() {
       <h1 className="mb-1 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{greeting(progress.name)} 👋</h1>
       <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
 
+      {/* Lowest-friction start: just 5 questions, no decisions */}
+      <Link
+        to="/practice"
+        className="mb-5 flex items-center justify-between rounded-3xl bg-gradient-to-l from-emerald-500 to-green-500 p-6 text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-600 hover:to-green-600"
+      >
+        <div>
+          <div className="text-2xl font-extrabold">✏️ בואו נתרגל</div>
+          <div className="text-base opacity-90">רק 5 שאלות — בלי לחשוב מאיפה להתחיל</div>
+        </div>
+        <span className="text-3xl">←</span>
+      </Link>
+
       {/* Daily goal */}
       <div className="mb-5 rounded-3xl bg-gradient-to-l from-amber-100 to-amber-50 p-5 dark:from-amber-500/15 dark:to-amber-500/5">
         <div className="flex items-center justify-between">

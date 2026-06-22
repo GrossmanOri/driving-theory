@@ -15,6 +15,7 @@ import { Settings } from './pages/Settings';
 import { Dashboard } from './pages/Dashboard';
 import { Collection } from './pages/Collection';
 import { Review } from './pages/Review';
+import { QuickPractice } from './pages/QuickPractice';
 
 function OnboardingGate() {
   const { progress, loaded } = useProgressContext();
@@ -40,6 +41,7 @@ function OnboardingGate() {
           <Route path="/learn/:topicId/:lessonIndex" element={<Learn />} />
           <Route path="/mistakes" element={<Mistakes />} />
           <Route path="/review" element={<Review />} />
+          <Route path="/practice" element={<QuickPractice />} />
           <Route path="/exam" element={<Exam />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

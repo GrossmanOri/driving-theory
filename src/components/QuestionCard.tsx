@@ -41,6 +41,7 @@ export function QuestionCard({
   const options = useMemo(() => shuffle(question.options), [question.id]);
   const [selected, setSelected] = useState<string | null>(null);
   const [hadMistake, setHadMistake] = useState(false);
+  const [wrongCount, setWrongCount] = useState(0);
   const [resolved, setResolved] = useState(false);
   const [shakeId, setShakeId] = useState<string | null>(null);
   const [floatPoints, setFloatPoints] = useState<number | null>(null);
@@ -93,6 +94,7 @@ export function QuestionCard({
     } else {
       // Gentle: light shake, encouraging message, let her try again.
       setHadMistake(true);
+      setWrongCount((n) => n + 1);
       setShakeId(optId);
       onAward?.(question.id, false, firstTry);
       setTimeout(() => setShakeId(null), 400);
@@ -100,17 +102,20 @@ export function QuestionCard({
   };
 
   const correctOptionId = options.find((o) => o.correct)!.id;
+  const hint = !examMode && wrongCount >= 2; // reveal a soft hint after 2 misses
 
   return (
-    <div className="relative mx-auto w-full max-w-2xl rounded-3xl bg-white p-6 shadow-sm sm:p-8 dark:bg-slate-800 dark:shadow-black/30">
-      {/* Sign / image — the visual hero */}
+    <div className="animate-pop-in relative mx-auto w-full max-w-2xl rounded-3xl bg-white p-6 shadow-sm sm:p-8 dark:bg-slate-800 dark:shadow-black/30">
+      {/* Sign / image — the visual hero, on a clean panel so it pops in any theme */}
       {question.imageUrl && (
         <div className="mb-5 flex justify-center">
-          <img
-            src={question.imageUrl}
-            alt="תמרור"
-            className="h-40 w-40 object-contain sm:h-48 sm:w-48"
-          />
+          <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+            <img
+              src={question.imageUrl}
+              alt="תמרור"
+              className="h-40 w-40 object-contain sm:h-48 sm:w-48"
+            />
+          </div>
         </div>
       )}
 
@@ -119,7 +124,7 @@ export function QuestionCard({
         {speechSupported() && (
           <button
             onClick={() => speak(question.text)}
-            className="shrink-0 rounded-full bg-sky-50 px-3 py-2 text-xl text-sky-600 hover:bg-sky-100"
+            className="shrink-0 rounded-full bg-sky-50 px-3 py-2 text-xl text-sky-600 hover:bg-sky-100 dark:bg-sky-500/15 dark:text-sky-300"
             aria-label="הקראת השאלה"
             title={`${gw('הקריאי', 'הקרא')} לי`}
           >
@@ -133,12 +138,15 @@ export function QuestionCard({
           const isSelected = selected === opt.id;
           const showCorrect = resolved && opt.id === correctOptionId;
           const isShaking = shakeId === opt.id;
+          // After 2 misses, softly point at the right answer so she's never stuck.
+          const showHint = hint && !resolved && opt.id === correctOptionId;
 
           let cls =
             'flex min-h-[56px] items-center gap-3 rounded-2xl border-2 px-4 py-3 text-right text-xl transition';
           if (showCorrect) cls += ' border-green-400 bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300';
           else if (examMode && isSelected) cls += ' border-sky-400 bg-sky-50 text-sky-800 dark:bg-sky-500/15 dark:text-sky-300';
           else if (resolved) cls += ' border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500';
+          else if (showHint) cls += ' border-green-300 bg-green-50 text-green-700 ring-2 ring-green-200 dark:bg-green-500/15 dark:text-green-300';
           else cls += ' border-slate-200 bg-white text-slate-700 hover:border-sky-300 hover:bg-sky-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:border-sky-500 dark:hover:bg-slate-600';
           if (isShaking) cls += ' animate-shake border-amber-300 bg-amber-50 dark:bg-amber-500/15';
 
@@ -150,7 +158,7 @@ export function QuestionCard({
               className={cls}
             >
               <span className="text-2xl">
-                {showCorrect ? '✅' : examMode && isSelected ? '🔵' : '⭕'}
+                {showCorrect ? '✅' : examMode && isSelected ? '🔵' : showHint ? '💡' : '⭕'}
               </span>
               <span className="flex-1">{opt.text}</span>
             </button>
@@ -168,10 +176,10 @@ export function QuestionCard({
         </div>
       )}
 
-      {/* Gentle retry message */}
+      {/* Gentle retry message — becomes a hint after 2 misses */}
       {!examMode && hadMistake && !resolved && (
-        <p className="mt-4 text-center text-xl font-semibold text-amber-600">
-          כמעט! {gw('נסי', 'נסה')} שוב 💛
+        <p className="mt-4 text-center text-xl font-semibold text-amber-600 dark:text-amber-400">
+          {hint ? 'רמז קטן: התשובה המודגשת 💡' : `כמעט! ${gw('נסי', 'נסה')} שוב 💛`}
         </p>
       )}
 
