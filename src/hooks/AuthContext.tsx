@@ -34,8 +34,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refresh = async () => {
     try {
       const cur = await getCurrentUser();
+      console.log('[auth] signed in as', cur.userId, cur.signInDetails?.loginId);
       setUser({ userId: cur.userId, email: cur.signInDetails?.loginId });
-    } catch {
+    } catch (e) {
+      console.log('[auth] no active session', e);
       setUser(null);
     }
   };
@@ -48,18 +50,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     loading,
     async signIn(email, password) {
-      await amplifySignIn({ username: email, password });
+      console.log('[auth] signIn ->', email);
+      const out = await amplifySignIn({ username: email, password });
+      console.log('[auth] signIn step:', out.nextStep?.signInStep);
       await refresh();
     },
     async signUp(email, password) {
-      await amplifySignUp({
+      console.log('[auth] signUp ->', email);
+      const out = await amplifySignUp({
         username: email,
         password,
         options: { userAttributes: { email } },
       });
+      console.log('[auth] signUp step:', out.nextStep?.signUpStep);
     },
     async confirm(email, code) {
+      console.log('[auth] confirm ->', email);
       await amplifyConfirm({ username: email, confirmationCode: code });
+      console.log('[auth] confirm ok');
     },
     async resend(email) {
       await resendSignUpCode({ username: email });

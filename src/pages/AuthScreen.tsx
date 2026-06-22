@@ -57,6 +57,9 @@ export function AuthScreen() {
     try {
       await fn();
     } catch (e) {
+      // Log the raw error so it's visible in the browser console for debugging.
+      const err = e as { name?: string; message?: string };
+      console.error('[auth] error:', err?.name, '—', err?.message, e);
       setError(friendlyError(e));
     } finally {
       setBusy(false);
