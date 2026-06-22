@@ -8,6 +8,10 @@ export const USER_POOL_CLIENT_ID = '3utcfgvp9macp5tgelj42dmsbv';
 // API Gateway (HTTP API) invoke URL.
 export const API_BASE = 'https://ds3xpsvhx3.execute-api.eu-central-1.amazonaws.com';
 
+// Flip to true once the /explain Lambda (Gemini) is deployed. Until then the
+// "explain simply" button stays hidden so it can't error in a demo.
+export const EXPLAIN_ENABLED = false;
+
 // Cognito Hosted-UI domain for social (Google) login.
 // Fill this in after creating the domain in the Cognito console, then set
 // GOOGLE_ENABLED = true. Example: 'theory-app-ori.auth.eu-central-1.amazoncognito.com'

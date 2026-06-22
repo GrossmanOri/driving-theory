@@ -175,8 +175,8 @@ export function QuestionCard({
         </p>
       )}
 
-      {/* Explanation after resolving (learn mode) */}
-      {!examMode && resolved && (
+      {/* Explanation after resolving (learn mode) — only when available/enabled */}
+      {!examMode && resolved && (explainText || onExplain) && (
         <div className="mt-5 rounded-2xl bg-sky-50 p-4">
           {explainText ? (
             <>

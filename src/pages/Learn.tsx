@@ -8,6 +8,7 @@ import { bigCelebrate } from '../components/confetti';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
 import { fetchExplanation } from '../lib/api';
+import { EXPLAIN_ENABLED } from '../config';
 
 export function Learn() {
   const { topicId = '', lessonIndex = '0' } = useParams();
@@ -104,7 +105,7 @@ export function Learn() {
         question={lesson[index]}
         onAward={recordAnswer}
         onBonus={addBonus}
-        onExplain={fetchExplanation}
+        onExplain={EXPLAIN_ENABLED ? fetchExplanation : undefined}
         onNext={handleNext}
         nextLabel={index + 1 < lesson.length ? 'לשאלה הבאה' : 'סיום השיעור'}
       />
