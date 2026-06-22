@@ -66,7 +66,7 @@ export function AuthScreen() {
   const onSignUp = () =>
     run(async () => {
       await signUp(email.trim(), password);
-      setInfo('שלחנו קוד אימות למייל שלך 📧');
+      setInfo('שלחנו קוד אימות למייל שלך 📧 (אם לא רואים — כדאי לבדוק בספאם)');
       setMode('confirm');
     });
   const onConfirm = () =>
@@ -170,6 +170,9 @@ export function AuthScreen() {
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none"
                 placeholder="------"
               />
+              <p className="rounded-xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700">
+                📨 לא רואה את המייל? בדקי בתיקיית הספאם / "דואר זבל" — לפעמים הוא מגיע לשם.
+              </p>
               <button
                 onClick={() => run(() => resend(email.trim()).then(() => setInfo('שלחנו קוד חדש 📧')))}
                 className="text-sm font-semibold text-sky-600 hover:underline"
