@@ -102,7 +102,7 @@ export function QuestionCard({
   const correctOptionId = options.find((o) => o.correct)!.id;
 
   return (
-    <div className="relative mx-auto w-full max-w-2xl rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+    <div className="relative mx-auto w-full max-w-2xl rounded-3xl bg-white p-6 shadow-sm sm:p-8 dark:bg-slate-800 dark:shadow-black/30">
       {/* Sign / image — the visual hero */}
       {question.imageUrl && (
         <div className="mb-5 flex justify-center">
@@ -115,7 +115,7 @@ export function QuestionCard({
       )}
 
       <div className="mb-5 flex items-start justify-between gap-3">
-        <h2 className="text-2xl font-bold leading-snug text-slate-800">{question.text}</h2>
+        <h2 className="text-2xl font-bold leading-snug text-slate-800 dark:text-slate-100">{question.text}</h2>
         {speechSupported() && (
           <button
             onClick={() => speak(question.text)}
@@ -136,11 +136,11 @@ export function QuestionCard({
 
           let cls =
             'flex min-h-[56px] items-center gap-3 rounded-2xl border-2 px-4 py-3 text-right text-xl transition';
-          if (showCorrect) cls += ' border-green-400 bg-green-50 text-green-800';
-          else if (examMode && isSelected) cls += ' border-sky-400 bg-sky-50 text-sky-800';
-          else if (resolved) cls += ' border-slate-200 bg-white text-slate-400';
-          else cls += ' border-slate-200 bg-white text-slate-700 hover:border-sky-300 hover:bg-sky-50';
-          if (isShaking) cls += ' animate-shake border-amber-300 bg-amber-50';
+          if (showCorrect) cls += ' border-green-400 bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300';
+          else if (examMode && isSelected) cls += ' border-sky-400 bg-sky-50 text-sky-800 dark:bg-sky-500/15 dark:text-sky-300';
+          else if (resolved) cls += ' border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500';
+          else cls += ' border-slate-200 bg-white text-slate-700 hover:border-sky-300 hover:bg-sky-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:border-sky-500 dark:hover:bg-slate-600';
+          if (isShaking) cls += ' animate-shake border-amber-300 bg-amber-50 dark:bg-amber-500/15';
 
           return (
             <button
@@ -177,14 +177,14 @@ export function QuestionCard({
 
       {/* Explanation after resolving (learn mode) — only when available/enabled */}
       {!examMode && resolved && (explainText || onExplain) && (
-        <div className="mt-5 rounded-2xl bg-sky-50 p-4">
+        <div className="mt-5 rounded-2xl bg-sky-50 p-4 dark:bg-sky-500/10">
           {explainText ? (
             <>
-              <p className="text-lg leading-relaxed text-slate-700">{explainText}</p>
+              <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-200">{explainText}</p>
               {speechSupported() && (
                 <button
                   onClick={() => speak(explainText)}
-                  className="mt-3 rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100"
+                  className="mt-3 rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100 dark:bg-slate-700 dark:text-sky-300"
                 >
                   🔊 {gw('הקריאי', 'הקרא')} לי
                 </button>

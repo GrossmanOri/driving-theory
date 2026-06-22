@@ -16,11 +16,11 @@ export function Home() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="mb-1 text-3xl font-extrabold text-slate-800">{greeting(progress.name)} 👋</h1>
-      <p className="mb-5 text-xl text-slate-500">{cheer(new Date().getDate())}</p>
+      <h1 className="mb-1 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{greeting(progress.name)} 👋</h1>
+      <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
 
       {/* Daily goal */}
-      <div className="mb-5 rounded-3xl bg-gradient-to-l from-amber-100 to-amber-50 p-5">
+      <div className="mb-5 rounded-3xl bg-gradient-to-l from-amber-100 to-amber-50 p-5 dark:from-amber-500/15 dark:to-amber-500/5">
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-amber-700">
             {dailyDone ? 'כל הכבוד! סיימת את היעד היומי 🎉' : 'היעד היומי שלך'}
@@ -38,31 +38,31 @@ export function Home() {
       </div>
 
       {/* Overall progress */}
-      <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm">
+      <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-lg font-bold text-slate-700">ההתקדמות שלך</span>
+          <span className="text-lg font-bold text-slate-700 dark:text-slate-200">ההתקדמות שלך</span>
           <span className="text-lg font-bold text-green-600">{pct}%</span>
         </div>
-        <div className="h-4 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-4 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
           <div className="h-full rounded-full bg-green-400 transition-all" style={{ width: `${pct}%` }} />
         </div>
-        <p className="mt-2 text-base text-slate-500">
+        <p className="mt-2 text-base text-slate-500 dark:text-slate-400">
           אספת {mastered} מתוך {total} תמרורים ושאלות 🏆
         </p>
       </div>
 
       {/* Topic map */}
-      <h2 className="mb-3 text-2xl font-bold text-slate-800">הנושאים</h2>
+      <h2 className="mb-3 text-2xl font-bold text-slate-800 dark:text-slate-100">הנושאים</h2>
       <div className="mb-6 grid gap-4">
         {topics.map((topic) => {
           const lessons = getLessons(topic.id);
           const shown = lessons.slice(0, 12); // big bank — show the first dozen
           return (
-            <div key={topic.id} className="rounded-3xl bg-white p-5 shadow-sm">
+            <div key={topic.id} className="rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{topic.icon}</span>
-                  <span className="text-xl font-bold text-slate-800">{topic.name}</span>
+                  <span className="text-xl font-bold text-slate-800 dark:text-slate-100">{topic.name}</span>
                 </div>
                 <span className="text-base text-slate-400">{lessons.length} שיעורים</span>
               </div>
@@ -74,9 +74,9 @@ export function Home() {
                     <Link
                       key={key}
                       to={`/learn/${topic.id}/${i}`}
-                      className="flex flex-col items-center gap-1 rounded-2xl border-2 border-sky-100 bg-sky-50 px-5 py-3 hover:border-sky-300"
+                      className="flex flex-col items-center gap-1 rounded-2xl border-2 border-sky-100 bg-sky-50 px-5 py-3 hover:border-sky-300 dark:border-slate-600 dark:bg-slate-700 dark:hover:border-sky-500"
                     >
-                      <span className="text-lg font-bold text-sky-700">שיעור {i + 1}</span>
+                      <span className="text-lg font-bold text-sky-700 dark:text-sky-300">שיעור {i + 1}</span>
                       <Stars count={stars} size="text-base" />
                     </Link>
                   );
@@ -118,7 +118,7 @@ export function Home() {
         </Link>
         <Link
           to="/settings"
-          className="rounded-3xl bg-slate-200 p-5 text-center text-xl font-bold text-slate-700 shadow-sm hover:bg-slate-300"
+          className="rounded-3xl bg-slate-200 p-5 text-center text-xl font-bold text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-300"
         >
           ⚙️ הגדרות
         </Link>

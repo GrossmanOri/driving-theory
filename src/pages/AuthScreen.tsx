@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { signInWithRedirect } from 'aws-amplify/auth';
 import { useAuth } from '../hooks/AuthContext';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { GOOGLE_ENABLED } from '../config';
 
 type Mode = 'signIn' | 'signUp' | 'confirm';
@@ -89,10 +90,13 @@ export function AuthScreen() {
       : 'הדרך הכי נעימה ללמוד לתיאוריה';
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4 py-10">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4 py-10 dark:bg-slate-900">
+      <div className="absolute top-4 left-4 z-10">
+        <ThemeToggle />
+      </div>
       {/* soft brand background */}
-      <div className="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full bg-sky-200/40 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl" />
+      <div className="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full bg-sky-200/40 blur-3xl dark:bg-sky-500/10" />
+      <div className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-500/10" />
 
       <div className="relative w-full max-w-md">
         {/* Brand */}
@@ -100,13 +104,13 @@ export function AuthScreen() {
           <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-emerald-500 text-3xl shadow-lg shadow-sky-500/30">
             🚗
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">לומדים תיאוריה</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">לומדים תיאוריה</h1>
         </div>
 
-        <div className="rounded-3xl border border-slate-100 bg-white/90 p-7 shadow-xl shadow-slate-200/60 backdrop-blur">
+        <div className="rounded-3xl border border-slate-100 bg-white/90 p-7 shadow-xl shadow-slate-200/60 backdrop-blur dark:border-slate-700 dark:bg-slate-800/90 dark:shadow-black/30">
           <div className="mb-6 text-center">
-            <h2 className="text-2xl font-bold text-slate-800">{title}</h2>
-            <p className="mt-1 text-base text-slate-500">{subtitle}</p>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">{title}</h2>
+            <p className="mt-1 text-base text-slate-500 dark:text-slate-400">{subtitle}</p>
           </div>
 
           {/* Google */}
@@ -130,25 +134,25 @@ export function AuthScreen() {
           {mode !== 'confirm' && (
             <div className="flex flex-col gap-4">
               <div>
-                <label className="mb-1.5 block text-sm font-semibold text-slate-600">אימייל</label>
+                <label className="mb-1.5 block text-sm font-semibold text-slate-600 dark:text-slate-300">אימייל</label>
                 <input
                   type="email"
                   dir="ltr"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   placeholder="name@example.com"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-semibold text-slate-600">סיסמה</label>
+                <label className="mb-1.5 block text-sm font-semibold text-slate-600 dark:text-slate-300">סיסמה</label>
                 <input
                   type="password"
                   dir="ltr"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && (mode === 'signIn' ? onSignIn() : onSignUp())}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   placeholder="••••••••"
                 />
                 {mode === 'signUp' && (
@@ -167,7 +171,7 @@ export function AuthScreen() {
                 dir="ltr"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none"
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                 placeholder="------"
               />
               <p className="rounded-xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700">
@@ -198,7 +202,7 @@ export function AuthScreen() {
           </button>
 
           {mode !== 'confirm' && (
-            <p className="mt-5 text-center text-sm text-slate-500">
+            <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
               {mode === 'signIn' ? 'אין לך חשבון עדיין? ' : 'כבר יש לך חשבון? '}
               <button
                 onClick={() => {

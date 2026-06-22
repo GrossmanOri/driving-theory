@@ -31,17 +31,17 @@ export function Collection() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="mb-1 text-3xl font-extrabold text-slate-800">אוסף התמרורים 🚸</h1>
-      <p className="mb-4 text-lg text-slate-500">כל תמרור ששולטים בו — נצבע ונכנס לאוסף!</p>
+      <h1 className="mb-1 text-3xl font-extrabold text-slate-800 dark:text-slate-100">אוסף התמרורים 🚸</h1>
+      <p className="mb-4 text-lg text-slate-500 dark:text-slate-400">כל תמרור ששולטים בו — נצבע ונכנס לאוסף!</p>
 
-      <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm">
+      <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-lg font-bold text-slate-700">
+          <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
             אספת {collected} מתוך {total}
           </span>
           <span className="text-lg font-bold text-amber-600">{pct}%</span>
         </div>
-        <div className="h-4 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-4 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
           <div className="h-full rounded-full bg-amber-400 transition-all" style={{ width: `${pct}%` }} />
         </div>
       </div>
@@ -51,7 +51,7 @@ export function Collection() {
           <div
             key={s.imageUrl}
             className={`flex aspect-square items-center justify-center rounded-2xl border-2 p-2 ${
-              s.collected ? 'border-amber-200 bg-white shadow-sm' : 'border-slate-100 bg-slate-100'
+              s.collected ? 'border-amber-200 bg-white shadow-sm dark:border-amber-500/30 dark:bg-slate-800' : 'border-slate-100 bg-slate-100 dark:border-slate-700 dark:bg-slate-800'
             }`}
           >
             {s.collected ? (

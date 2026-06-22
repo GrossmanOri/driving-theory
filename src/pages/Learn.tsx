@@ -28,7 +28,7 @@ export function Learn() {
   if (!topic || lesson.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-xl text-slate-500">השיעור לא נמצא.</p>
+        <p className="text-xl text-slate-500 dark:text-slate-400">השיעור לא נמצא.</p>
         <Link to="/" className="mt-4 inline-block text-sky-600">חזרה לבית</Link>
       </div>
     );
@@ -52,12 +52,12 @@ export function Learn() {
   if (done) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <div className="rounded-3xl bg-white p-8 shadow-sm">
+        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
           <div className="mb-4 text-6xl">🎉</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800">
+          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
             כל הכבוד{progress.name ? `, ${progress.name}` : ''}! 🎉
           </h2>
-          <p className="mb-5 text-xl text-slate-500">סיימת את השיעור — זה מה שחשוב.</p>
+          <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">סיימת את השיעור — זה מה שחשוב.</p>
           <div className="mb-6 flex justify-center">
             <Stars count={stars} size="text-5xl" />
           </div>
@@ -71,7 +71,7 @@ export function Learn() {
                 setFirstTryCount(0);
                 setDone(false);
               }}
-              className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 hover:bg-slate-200"
+              className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200"
             >
               לתרגל שוב
             </button>
@@ -84,7 +84,7 @@ export function Learn() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4">
-        <div className="mb-2 flex items-center justify-between text-base text-slate-500">
+        <div className="mb-2 flex items-center justify-between text-base text-slate-500 dark:text-slate-400">
           <span>
             {topic.icon} {topic.name} · שיעור {Number(lessonIndex) + 1}
           </span>
@@ -92,7 +92,7 @@ export function Learn() {
             {index + 1}/{lesson.length}
           </span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
           <div
             className="h-full rounded-full bg-sky-400 transition-all"
             style={{ width: `${((index) / lesson.length) * 100}%` }}

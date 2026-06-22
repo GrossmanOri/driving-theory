@@ -12,7 +12,7 @@ function Ring({ pct }: { pct: number }) {
   const c = 2 * Math.PI * r;
   return (
     <svg viewBox="0 0 120 120" className="h-32 w-32">
-      <circle cx="60" cy="60" r={r} fill="none" stroke="#e2e8f0" strokeWidth="12" />
+      <circle cx="60" cy="60" r={r} fill="none" strokeWidth="12" className="stroke-slate-200 dark:stroke-slate-700" />
       <circle
         cx="60"
         cy="60"
@@ -25,7 +25,7 @@ function Ring({ pct }: { pct: number }) {
         strokeDashoffset={c * (1 - pct / 100)}
         transform="rotate(-90 60 60)"
       />
-      <text x="60" y="68" textAnchor="middle" fontSize="26" fontWeight="bold" fill="#1f2430">
+      <text x="60" y="68" textAnchor="middle" fontSize="26" fontWeight="bold" className="fill-slate-800 dark:fill-slate-100">
         {pct}%
       </text>
     </svg>
@@ -70,15 +70,15 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="mb-1 text-3xl font-extrabold text-slate-800">{greeting(progress.name)} 📊</h1>
-      <p className="mb-5 text-lg text-slate-500">הנה כמה רחוק הגעת</p>
+      <h1 className="mb-1 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{greeting(progress.name)} 📊</h1>
+      <p className="mb-5 text-lg text-slate-500 dark:text-slate-400">הנה כמה רחוק הגעת</p>
 
       {/* What you did */}
-      <div className="mb-6 flex items-center gap-5 rounded-3xl bg-white p-5 shadow-sm">
+      <div className="mb-6 flex items-center gap-5 rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
         <Ring pct={pct} />
         <div className="flex-1">
-          <p className="text-lg text-slate-500">אספת עד עכשיו</p>
-          <p className="text-2xl font-extrabold text-slate-800">{mastered} שאלות 🏆</p>
+          <p className="text-lg text-slate-500 dark:text-slate-400">אספת עד עכשיו</p>
+          <p className="text-2xl font-extrabold text-slate-800 dark:text-slate-100">{mastered} שאלות 🏆</p>
           <div className="mt-2 flex gap-3 text-lg font-bold">
             <span className="rounded-full bg-amber-50 px-3 py-1 text-amber-600">⭐ {totalStars}</span>
             <span className="rounded-full bg-green-50 px-3 py-1 text-green-600">{progress.points} נק׳</span>
@@ -104,29 +104,29 @@ export function Dashboard() {
               : 'הגעת לדרגה הגבוהה ביותר! 🏆'}
           </p>
         </div>
-        <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-5 shadow-sm">
+        <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
           <div className="text-4xl">🔥</div>
           <div className="text-3xl font-extrabold text-orange-500">{streak}</div>
-          <div className="text-base text-slate-500">ימים ברצף</div>
+          <div className="text-base text-slate-500 dark:text-slate-400">ימים ברצף</div>
         </div>
       </div>
 
       {/* Per-topic */}
-      <h2 className="mb-3 text-2xl font-bold text-slate-800">לפי נושא</h2>
+      <h2 className="mb-3 text-2xl font-bold text-slate-800 dark:text-slate-100">לפי נושא</h2>
       <div className="mb-6 grid gap-3">
         {topics.map((t) => {
           const p = t.total ? Math.round((t.done / t.total) * 100) : 0;
           return (
-            <div key={t.id} className="rounded-2xl bg-white p-4 shadow-sm">
+            <div key={t.id} className="rounded-2xl bg-white p-4 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
               <div className="mb-1 flex items-center justify-between">
-                <span className="text-lg font-bold text-slate-700">
+                <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
                   {t.icon} {t.name}
                 </span>
-                <span className="text-base text-slate-500">
+                <span className="text-base text-slate-500 dark:text-slate-400">
                   {t.done}/{t.total}
                 </span>
               </div>
-              <div className="h-3 overflow-hidden rounded-full bg-slate-100">
+              <div className="h-3 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
                 <div className="h-full rounded-full bg-sky-400" style={{ width: `${p}%` }} />
               </div>
             </div>
@@ -135,33 +135,33 @@ export function Dashboard() {
       </div>
 
       {/* What's next */}
-      <h2 className="mb-3 text-2xl font-bold text-slate-800">מה הלאה</h2>
+      <h2 className="mb-3 text-2xl font-bold text-slate-800 dark:text-slate-100">מה הלאה</h2>
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div className="rounded-2xl bg-purple-50 p-4 text-center">
           <div className="text-3xl font-extrabold text-purple-600">{dueCount}</div>
-          <div className="text-base text-slate-600">לחזרה היום</div>
+          <div className="text-base text-slate-600 dark:text-slate-300">לחזרה היום</div>
         </div>
         <Link to="/mistakes" className="rounded-2xl bg-amber-50 p-4 text-center hover:bg-amber-100">
           <div className="text-3xl font-extrabold text-amber-600">{progress.mistakes.length}</div>
-          <div className="text-base text-slate-600">טעויות לתרגל</div>
+          <div className="text-base text-slate-600 dark:text-slate-300">טעויות לתרגל</div>
         </Link>
         <div className="rounded-2xl bg-green-50 p-4 text-center">
           <div className="text-3xl font-extrabold text-green-600">
             {daily}/{DAILY_GOAL}
           </div>
-          <div className="text-base text-slate-600">יעד יומי</div>
+          <div className="text-base text-slate-600 dark:text-slate-300">יעד יומי</div>
         </div>
       </div>
 
       {/* Sign collection */}
-      <Link to="/collection" className="mb-6 block rounded-3xl bg-white p-5 shadow-sm transition hover:shadow-md">
+      <Link to="/collection" className="mb-6 block rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30 transition hover:shadow-md">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-lg font-bold text-slate-700">🚸 אוסף התמרורים</span>
-          <span className="text-base text-slate-500">
+          <span className="text-lg font-bold text-slate-700 dark:text-slate-200">🚸 אוסף התמרורים</span>
+          <span className="text-base text-slate-500 dark:text-slate-400">
             {signsCollected}/{signs.length} ←
           </span>
         </div>
-        <div className="h-3 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-3 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
           <div
             className="h-full rounded-full bg-amber-400"
             style={{ width: `${signs.length ? (signsCollected / signs.length) * 100 : 0}%` }}
@@ -170,17 +170,19 @@ export function Dashboard() {
       </Link>
 
       {/* Rewards */}
-      <h2 className="mb-3 text-2xl font-bold text-slate-800">הישגים 🎖️</h2>
+      <h2 className="mb-3 text-2xl font-bold text-slate-800 dark:text-slate-100">הישגים 🎖️</h2>
       <div className="grid grid-cols-3 gap-3">
         {badges.map((b) => (
           <div
             key={b.id}
             className={`flex flex-col items-center gap-1 rounded-2xl p-4 text-center ${
-              b.unlocked ? 'bg-white shadow-sm' : 'bg-slate-100 opacity-50 grayscale'
+              b.unlocked
+                ? 'bg-white shadow-sm dark:bg-slate-800'
+                : 'bg-slate-100 opacity-50 grayscale dark:bg-slate-800'
             }`}
           >
             <span className="text-4xl">{b.icon}</span>
-            <span className="text-sm font-semibold text-slate-600">{b.label}</span>
+            <span className="text-sm font-semibold text-slate-600 dark:text-slate-300">{b.label}</span>
           </div>
         ))}
       </div>

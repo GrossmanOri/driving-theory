@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: the `dark` class on <html> drives `dark:` variants. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   font-family: "Heebo", "Assistant", system-ui, -apple-system, sans-serif;
   /* base font size driven by the text-size control in settings */
@@ -14,6 +17,11 @@ body {
   color: #1f2430;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+}
+
+.dark body {
+  background: #0f172a; /* slate-900 */
+  color: #e2e8f0; /* slate-200 */
 }
 
 /* Big, easy tap targets everywhere */

@@ -75,17 +75,17 @@ export function Exam() {
   if (phase === 'intro') {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <div className="rounded-3xl bg-white p-8 shadow-sm">
+        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
           <div className="mb-3 text-center text-6xl">🎓</div>
-          <h2 className="mb-3 text-center text-3xl font-extrabold text-slate-800">מבחן דמה</h2>
-          <ul className="mb-6 space-y-2 text-lg text-slate-600">
+          <h2 className="mb-3 text-center text-3xl font-extrabold text-slate-800 dark:text-slate-100">מבחן דמה</h2>
+          <ul className="mb-6 space-y-2 text-lg text-slate-600 dark:text-slate-300">
             <li>📋 {EXAM_COUNT} שאלות</li>
             <li>✅ עוברים עם {PASS_MARK} תשובות נכונות (עד 4 טעויות)</li>
             <li>⏱️ 40 דקות — אפשר לכבות את הטיימר</li>
             <li>💛 זה רק תרגול. גם אם לא עוברים — לומדים מזה.</li>
           </ul>
           <label className="mb-6 flex items-center justify-between rounded-2xl bg-slate-50 p-4">
-            <span className="text-lg font-bold text-slate-700">טיימר פעיל</span>
+            <span className="text-lg font-bold text-slate-700 dark:text-slate-200">טיימר פעיל</span>
             <button
               onClick={() => setExamTimer(!timerOn)}
               className={`h-8 w-14 rounded-full transition ${timerOn ? 'bg-green-400' : 'bg-slate-300'}`}
@@ -113,16 +113,16 @@ export function Exam() {
     const missed = answers.filter((a) => !a.correct);
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
+        <div className="rounded-3xl bg-white p-8 text-center shadow-sm dark:bg-slate-800 dark:shadow-black/30">
           <div className="mb-3 text-6xl">{result.passed ? '🎉' : '💪'}</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800">
+          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
             {progress.name ? `${progress.name}, ` : ''}
             {result.passed ? 'עברת! מדהים!' : 'כל הכבוד שסיימת!'}
           </h2>
-          <p className="mb-4 text-2xl font-bold text-slate-700">
+          <p className="mb-4 text-2xl font-bold text-slate-700 dark:text-slate-200">
             {result.correct}/{result.total}
           </p>
-          <p className="mb-6 text-lg text-slate-500">
+          <p className="mb-6 text-lg text-slate-500 dark:text-slate-400">
             {result.passed
               ? `מעל ${PASS_MARK} — בדיוק מה שצריך במבחן האמיתי.`
               : `צריך ${PASS_MARK} כדי לעבור. עוד קצת תרגול וזה אצלך בכיס 💛`}
@@ -130,11 +130,11 @@ export function Exam() {
 
           {missed.length > 0 && (
             <div className="mb-6 text-right">
-              <h3 className="mb-3 text-xl font-bold text-slate-700">שאלות לחזור עליהן:</h3>
+              <h3 className="mb-3 text-xl font-bold text-slate-700 dark:text-slate-200">שאלות לחזור עליהן:</h3>
               <div className="space-y-3">
                 {missed.map((a, i) => (
                   <div key={i} className="rounded-2xl bg-amber-50 p-4">
-                    <p className="mb-1 font-semibold text-slate-700">{a.question.text}</p>
+                    <p className="mb-1 font-semibold text-slate-700 dark:text-slate-200">{a.question.text}</p>
                     <p className="text-green-700">
                       ✅ {a.question.options.find((o) => o.correct)?.text}
                     </p>
@@ -154,7 +154,7 @@ export function Exam() {
             <Link to="/mistakes" className="rounded-2xl bg-purple-400 px-6 py-3 text-xl font-bold text-white hover:bg-purple-500">
               לתרגל את הטעויות
             </Link>
-            <Link to="/" className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 hover:bg-slate-200">
+            <Link to="/" className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600">
               לבית
             </Link>
           </div>
@@ -168,11 +168,11 @@ export function Exam() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-lg font-bold text-slate-600">
+        <span className="text-lg font-bold text-slate-600 dark:text-slate-300">
           שאלה {index + 1}/{questions.length}
         </span>
         {timerOn && (
-          <span className={`rounded-full px-3 py-1 text-lg font-bold ${timeLeft < 60 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'}`}>
+          <span className={`rounded-full px-3 py-1 text-lg font-bold ${timeLeft < 60 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600 dark:text-slate-300'}`}>
             ⏱️ {fmt(timeLeft)}
           </span>
         )}
