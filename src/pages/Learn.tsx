@@ -7,6 +7,7 @@ import { Stars } from '../components/Stars';
 import { bigCelebrate } from '../components/confetti';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
+import { fetchExplanation } from '../lib/api';
 
 export function Learn() {
   const { topicId = '', lessonIndex = '0' } = useParams();
@@ -103,6 +104,7 @@ export function Learn() {
         question={lesson[index]}
         onAward={recordAnswer}
         onBonus={addBonus}
+        onExplain={fetchExplanation}
         onNext={handleNext}
         nextLabel={index + 1 < lesson.length ? 'לשאלה הבאה' : 'סיום השיעור'}
       />

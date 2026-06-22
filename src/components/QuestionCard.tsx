@@ -12,6 +12,8 @@ interface Props {
   onAward?: (questionId: string, correct: boolean, firstTry: boolean) => number;
   /** Grant a surprise bonus (learn mode only). */
   onBonus?: (points: number) => void;
+  /** Fetch a simple AI explanation for the question (learn mode). */
+  onExplain?: (questionId: string) => Promise<string>;
   /** Exam mode: lock in the first answer, no retry, muted feedback. */
   examMode?: boolean;
   /** Label for the advance button. */
@@ -27,7 +29,15 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export function QuestionCard({ question, onNext, onAward, onBonus, examMode = false, nextLabel = 'המשך' }: Props) {
+export function QuestionCard({
+  question,
+  onNext,
+  onAward,
+  onBonus,
+  onExplain,
+  examMode = false,
+  nextLabel = 'המשך',
+}: Props) {
   const options = useMemo(() => shuffle(question.options), [question.id]);
   const [selected, setSelected] = useState<string | null>(null);
   const [hadMistake, setHadMistake] = useState(false);
@@ -35,7 +45,22 @@ export function QuestionCard({ question, onNext, onAward, onBonus, examMode = fa
   const [shakeId, setShakeId] = useState<string | null>(null);
   const [floatPoints, setFloatPoints] = useState<number | null>(null);
   const [bonus, setBonus] = useState(false);
-  const [altExplain, setAltExplain] = useState(false);
+  const [explainText, setExplainText] = useState(question.explanation || '');
+  const [explainLoading, setExplainLoading] = useState(false);
+  const [explainError, setExplainError] = useState('');
+
+  const handleExplain = async () => {
+    if (!onExplain) return;
+    setExplainLoading(true);
+    setExplainError('');
+    try {
+      setExplainText(await onExplain(question.id));
+    } catch {
+      setExplainError('לא הצלחנו להסביר כרגע. ננסה שוב?');
+    } finally {
+      setExplainLoading(false);
+    }
+  };
 
   const handleSelect = (optId: string) => {
     if (resolved) return;
@@ -153,25 +178,30 @@ export function QuestionCard({ question, onNext, onAward, onBonus, examMode = fa
       {/* Explanation after resolving (learn mode) */}
       {!examMode && resolved && (
         <div className="mt-5 rounded-2xl bg-sky-50 p-4">
-          <p className="text-lg leading-relaxed text-slate-700">
-            {altExplain ? `במילים פשוטות: ${question.explanation}` : question.explanation}
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {speechSupported() && (
+          {explainText ? (
+            <>
+              <p className="text-lg leading-relaxed text-slate-700">{explainText}</p>
+              {speechSupported() && (
+                <button
+                  onClick={() => speak(explainText)}
+                  className="mt-3 rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100"
+                >
+                  🔊 {gw('הקריאי', 'הקרא')} לי
+                </button>
+              )}
+            </>
+          ) : (
+            <div className="text-center">
               <button
-                onClick={() => speak(question.explanation)}
-                className="rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100"
+                onClick={handleExplain}
+                disabled={explainLoading || !onExplain}
+                className="rounded-full bg-sky-500 px-6 py-3 text-base font-bold text-white shadow-sm transition hover:bg-sky-600 disabled:opacity-60"
               >
-                🔊 {gw('הקריאי', 'הקרא')} לי
+                {explainLoading ? 'חושבים על הסבר… 🤔' : '💡 הסבירו לי בקלות'}
               </button>
-            )}
-            <button
-              onClick={() => setAltExplain((v) => !v)}
-              className="rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100"
-            >
-              💡 {gw('תסבירי', 'תסביר')} לי אחרת
-            </button>
-          </div>
+              {explainError && <p className="mt-2 text-sm text-amber-600">{explainError}</p>}
+            </div>
+          )}
         </div>
       )}
 

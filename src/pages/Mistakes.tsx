@@ -5,6 +5,7 @@ import { useProgressContext } from '../hooks/ProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
+import { fetchExplanation } from '../lib/api';
 
 export function Mistakes() {
   const { progress, recordAnswer, addBonus } = useProgressContext();
@@ -57,6 +58,7 @@ export function Mistakes() {
         question={questions[index]}
         onAward={recordAnswer}
         onBonus={addBonus}
+        onExplain={fetchExplanation}
         onNext={handleNext}
         nextLabel={index + 1 < questions.length ? 'הבא' : 'סיום'}
       />

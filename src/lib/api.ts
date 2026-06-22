@@ -47,6 +47,18 @@ export async function fetchProgress(): Promise<ProgressItem[]> {
   return data.items;
 }
 
+/** Authenticated: get (or generate) a simple Hebrew explanation for a question. */
+export async function fetchExplanation(questionId: string): Promise<string> {
+  const res = await fetch(`${API_BASE}/explain`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
+    body: JSON.stringify({ questionId }),
+  });
+  if (!res.ok) throw new Error(`explain ${res.status}`);
+  const data: { explanation: string } = await res.json();
+  return data.explanation;
+}
+
 /** Authenticated: upsert progress items. */
 export async function saveProgress(items: ProgressItem[]): Promise<void> {
   if (items.length === 0) return;
