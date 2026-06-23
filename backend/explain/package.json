@@ -3,8 +3,5 @@
   "private": true,
   "type": "module",
   "version": "1.0.0",
-  "description": "Lambda that generates simple Hebrew explanations via Claude",
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.69.0"
-  }
+  "description": "Lambda that generates simple Hebrew explanations via Google Gemini (no deps)"
 }
