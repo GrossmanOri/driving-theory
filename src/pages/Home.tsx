@@ -4,6 +4,7 @@ import { useProgressContext } from '../hooks/ProgressContext';
 import { Stars } from '../components/Stars';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
 import { cheer, greeting } from '../lib/greeting';
+import { challengeDoneToday } from '../lib/dailyChallenge';
 
 export function Home() {
   const { progress } = useProgressContext();
@@ -17,7 +18,23 @@ export function Home() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <h1 className="mb-1 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{greeting(progress.name)} 👋</h1>
-      <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
+      <p className="mb-4 text-xl text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
+
+      {/* Journey: the car drives (right → left) toward the 🏁 as progress grows */}
+      <div className="relative mb-5 h-10">
+        <div className="absolute top-1/2 h-2 w-full -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
+        <div
+          className="absolute top-1/2 right-0 h-2 -translate-y-1/2 rounded-full bg-emerald-400 transition-all duration-700"
+          style={{ width: `${pct}%` }}
+        />
+        <span
+          className="absolute top-1/2 -translate-y-1/2 text-2xl transition-all duration-700"
+          style={{ left: `calc(${100 - pct}% - 14px)` }}
+        >
+          🚗
+        </span>
+        <span className="absolute top-1/2 left-0 -translate-y-1/2 text-2xl">🏁</span>
+      </div>
 
       {/* Lowest-friction start: just 5 questions, no decisions */}
       <Link
@@ -29,6 +46,23 @@ export function Home() {
           <div className="text-base opacity-90">רק 5 שאלות — בלי לחשוב מאיפה להתחיל</div>
         </div>
         <span className="text-3xl">←</span>
+      </Link>
+
+      {/* Daily challenge */}
+      <Link
+        to="/daily"
+        className="mb-5 flex items-center justify-between rounded-3xl border-2 border-amber-200 bg-white p-4 shadow-sm transition hover:border-amber-300 dark:border-amber-500/30 dark:bg-slate-800"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">🎯</span>
+          <div>
+            <div className="text-lg font-bold text-slate-800 dark:text-slate-100">אתגר יומי</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">
+              {challengeDoneToday() ? 'הושלם להיום — כל הכבוד! ✅' : '7 שאלות + בונוס נקודות'}
+            </div>
+          </div>
+        </div>
+        <span className="text-2xl">{challengeDoneToday() ? '🏆' : '←'}</span>
       </Link>
 
       {/* Daily goal */}
@@ -118,6 +152,24 @@ export function Home() {
           className="rounded-3xl bg-sky-500 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-sky-600"
         >
           🔄 חזרה חכמה
+        </Link>
+        <Link
+          to="/blitz"
+          className="rounded-3xl bg-amber-500 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-amber-600"
+        >
+          ⚡ בליץ דקה
+        </Link>
+        <Link
+          to="/flashcards"
+          className="rounded-3xl bg-indigo-400 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-indigo-500"
+        >
+          🃏 כרטיסיות תמרורים
+        </Link>
+        <Link
+          to="/focus"
+          className="rounded-3xl bg-rose-400 p-5 text-center text-xl font-bold text-white shadow-md hover:bg-rose-500"
+        >
+          🎯 תרגול ממוקד
         </Link>
         <Link
           to="/mistakes"

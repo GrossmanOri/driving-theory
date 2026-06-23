@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { Question } from '../data/types';
 import { speak, speechSupported } from '../lib/speech';
 import { gw } from '../lib/gender';
+import { playCorrect, playWrong } from '../lib/sound';
 import { celebrate } from './confetti';
 
 interface Props {
@@ -90,6 +91,7 @@ export function QuestionCard({
         setFloatPoints(pts);
       }
       if (pts > 0) setTimeout(() => setFloatPoints(null), 1200);
+      playCorrect();
       celebrate();
     } else {
       // Gentle: light shake, encouraging message, let her try again.
@@ -97,6 +99,7 @@ export function QuestionCard({
       setWrongCount((n) => n + 1);
       setShakeId(optId);
       onAward?.(question.id, false, firstTry);
+      playWrong();
       setTimeout(() => setShakeId(null), 400);
     }
   };

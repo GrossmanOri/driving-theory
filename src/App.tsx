@@ -5,6 +5,7 @@ import { ProgressProvider, useProgressContext } from './hooks/ProgressContext';
 import { AppGate } from './components/AppGate';
 import { setGender } from './lib/gender';
 import { TopBar } from './components/TopBar';
+import { LevelUpCelebration } from './components/LevelUpCelebration';
 import { AuthScreen } from './pages/AuthScreen';
 import { Onboarding } from './pages/Onboarding';
 import { Home } from './pages/Home';
@@ -16,6 +17,10 @@ import { Dashboard } from './pages/Dashboard';
 import { Collection } from './pages/Collection';
 import { Review } from './pages/Review';
 import { QuickPractice } from './pages/QuickPractice';
+import { Blitz } from './pages/Blitz';
+import { Flashcards } from './pages/Flashcards';
+import { Focus } from './pages/Focus';
+import { DailyChallenge } from './pages/DailyChallenge';
 
 function OnboardingGate() {
   const { progress, loaded } = useProgressContext();
@@ -32,6 +37,7 @@ function OnboardingGate() {
 
   return (
     <BrowserRouter>
+      <LevelUpCelebration />
       <TopBar />
       <main className="min-h-screen pb-12">
         <Routes>
@@ -42,6 +48,10 @@ function OnboardingGate() {
           <Route path="/mistakes" element={<Mistakes />} />
           <Route path="/review" element={<Review />} />
           <Route path="/practice" element={<QuickPractice />} />
+          <Route path="/blitz" element={<Blitz />} />
+          <Route path="/flashcards" element={<Flashcards />} />
+          <Route path="/focus" element={<Focus />} />
+          <Route path="/daily" element={<DailyChallenge />} />
           <Route path="/exam" element={<Exam />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

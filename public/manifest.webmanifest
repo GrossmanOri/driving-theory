@@ -1,0 +1,14 @@
+{
+  "name": "לומדים תיאוריה",
+  "short_name": "תיאוריה",
+  "description": "אפליקציה ללימוד מבחן התיאוריה, בלי לחץ",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0ea5e9",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any maskable" }
+  ]
+}

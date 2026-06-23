@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useProgressContext } from '../hooks/ProgressContext';
 import { speak, speechSupported } from '../lib/speech';
 import { useTheme } from '../hooks/useTheme';
 import type { Theme } from '../lib/theme';
+import { soundEnabled, setSoundEnabled, playCorrect } from '../lib/sound';
 
 const SIZES = [
   { label: 'רגיל', px: 18 },
@@ -18,6 +20,7 @@ const THEMES: { label: string; value: Theme; icon: string }[] = [
 export function Settings() {
   const { progress, setFontSize } = useProgressContext();
   const { theme, set: setTheme } = useTheme();
+  const [sound, setSound] = useState(soundEnabled());
   const current = progress.settings.fontSizePx;
 
   const cardCls = 'mb-5 rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30';
@@ -48,6 +51,27 @@ export function Settings() {
             </button>
           ))}
         </div>
+      </section>
+
+      {/* Sound */}
+      <section className={cardCls}>
+        <h2 className={h2Cls}>צלילים ורטט</h2>
+        <label className="flex items-center justify-between">
+          <span className="text-lg text-slate-600 dark:text-slate-300">צלילי עידוד ורטט קטן</span>
+          <button
+            onClick={() => {
+              const next = !sound;
+              setSound(next);
+              setSoundEnabled(next);
+              if (next) playCorrect();
+            }}
+            className={`h-8 w-14 rounded-full transition ${sound ? 'bg-green-400' : 'bg-slate-300 dark:bg-slate-600'}`}
+          >
+            <span
+              className={`block h-7 w-7 rounded-full bg-white shadow transition ${sound ? 'translate-x-0' : '-translate-x-6'}`}
+            />
+          </button>
+        </label>
       </section>
 
       {/* Text size */}
