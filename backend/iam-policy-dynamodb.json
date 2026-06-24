@@ -1,6 +1,5 @@
 {
   "Version": "2012-10-17",
-  "Comment": "Least-privilege DynamoDB access for the theory Lambdas. Replace AmazonDynamoDBFullAccess with this. Account 112712885042, region eu-central-1.",
   "Statement": [
     {
       "Sid": "QuestionsRead",
