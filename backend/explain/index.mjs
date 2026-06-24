@@ -37,11 +37,17 @@ const SYSTEM = `אתה מורה לתיאוריה בישראל, סבלני וחם
 // Fetch the sign image and return { mimeType, data(base64) } for Gemini vision.
 async function fetchImagePart(url) {
   try {
+    // Only mirror images from the official gov.il host — defense-in-depth
+    // against SSRF (imageUrl already comes from our own DB, not user input).
+    const host = new URL(url).hostname;
+    if (host !== 'www.gov.il' && host !== 'gov.il') return null;
+
     const res = await fetch(url, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
       },
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;
     const mimeType = res.headers.get('content-type') || 'image/jpeg';
@@ -115,7 +121,8 @@ export const handler = async (event) => {
 
     return json(200, { explanation, cached: false });
   } catch (err) {
+    // Log the detail server-side; return a generic message to the client.
     console.error(err);
-    return json(500, { error: err.message });
+    return json(500, { error: 'internal error' });
   }
 };

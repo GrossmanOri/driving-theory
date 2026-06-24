@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Comment": "Least-privilege DynamoDB access for the theory Lambdas. Replace AmazonDynamoDBFullAccess with this. Account 112712885042, region eu-central-1.",
+  "Statement": [
+    {
+      "Sid": "QuestionsRead",
+      "Effect": "Allow",
+      "Action": ["dynamodb:Scan", "dynamodb:Query", "dynamodb:GetItem"],
+      "Resource": [
+        "arn:aws:dynamodb:eu-central-1:112712885042:table/TheoryQuestions",
+        "arn:aws:dynamodb:eu-central-1:112712885042:table/TheoryQuestions/index/*"
+      ]
+    },
+    {
+      "Sid": "QuestionsCacheWrite",
+      "Effect": "Allow",
+      "Action": ["dynamodb:UpdateItem"],
+      "Resource": "arn:aws:dynamodb:eu-central-1:112712885042:table/TheoryQuestions"
+    },
+    {
+      "Sid": "UserDataReadWrite",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:BatchWriteItem"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-central-1:112712885042:table/UserData"
+    }
+  ]
+}

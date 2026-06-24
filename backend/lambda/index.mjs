@@ -49,8 +49,9 @@ export const handler = async (event) => {
 
     return json(404, { error: 'not found' });
   } catch (err) {
+    // Log the detail server-side; return a generic message to the client.
     console.error(err);
-    return json(500, { error: err.message });
+    return json(500, { error: 'internal error' });
   }
 };
 
@@ -82,12 +83,15 @@ async function getProgress(userId) {
 
 // --- POST /progress: upsert a list of items, forcing the caller's userId. ---
 // Body: { items: [ { sk: "PROFILE", ... }, { sk: "Q#Q123", box, nextDue, ... } ] }
+const MAX_ITEMS = 200; // bound a single write to prevent abuse / runaway cost
+
 async function saveProgress(userId, body) {
   const items = Array.isArray(body.items) ? body.items : [];
   if (items.length === 0) return json(400, { error: 'no items' });
+  if (items.length > MAX_ITEMS) return json(400, { error: 'too many items' });
 
   const valid = items
-    .filter((it) => typeof it.sk === 'string' && it.sk.length > 0)
+    .filter((it) => typeof it.sk === 'string' && it.sk.length > 0 && it.sk.length <= 128)
     .map((it) => ({ ...it, userId })); // never trust a client-supplied userId
 
   if (valid.length === 0) return json(400, { error: 'items need an sk' });
