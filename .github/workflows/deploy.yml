@@ -1,0 +1,52 @@
+name: Deploy to AWS
+
+# Builds the site and ships it to S3 + CloudFront on every push to main.
+# Auth is via GitHub OIDC — no long-lived AWS keys are stored anywhere.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allow manual "Run workflow" from the Actions tab
+
+permissions:
+  id-token: write # required to request the OIDC token
+  contents: read
+
+# Never run two deploys at once; a newer push supersedes an in-flight one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-central-1
+      S3_BUCKET: theory-app-web-ori
+      CLOUDFRONT_DISTRIBUTION_ID: E3U251UNW6ZOD
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload build to S3
+        run: aws s3 sync dist/ "s3://$S3_BUCKET" --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/*"

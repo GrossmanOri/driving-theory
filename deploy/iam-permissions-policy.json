@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListDeployBucket",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::theory-app-web-ori"
+    },
+    {
+      "Sid": "WriteDeployObjects",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:DeleteObject", "s3:GetObject"],
+      "Resource": "arn:aws:s3:::theory-app-web-ori/*"
+    },
+    {
+      "Sid": "InvalidateCdn",
+      "Effect": "Allow",
+      "Action": ["cloudfront:CreateInvalidation"],
+      "Resource": "arn:aws:cloudfront::112712885042:distribution/E3U251UNW6ZOD"
+    }
+  ]
+}
