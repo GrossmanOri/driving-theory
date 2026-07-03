@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchQuestions } from '../lib/api';
 import { setQuestions } from '../data/loader';
+import { LoadingScreen } from './Loading';
+import { Card } from './Card';
+import { Button } from './Button';
+import { IconAlert, IconRotate } from './Icons';
 
 // Loads the question bank from the API once, then renders the app.
 export function AppGate({ children }) {
@@ -25,22 +29,22 @@ export function AppGate({ children }) {
   }, []);
 
   if (state === 'loading') {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-slate-500">
-        <div className="text-5xl">🚗</div>
-        <p className="text-xl">טוענים את השאלות…</p>
-      </div>
-    );
+    return <LoadingScreen label="טוענים את השאלות…" />;
   }
 
   if (state === 'error') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center text-slate-600">
-        <div className="text-5xl">😕</div>
-        <p className="text-xl">לא הצלחנו לטעון את השאלות.</p>
-        <button onClick={load} className="rounded-2xl bg-sky-500 px-6 py-3 text-lg font-bold text-white">
-          נסי שוב
-        </button>
+      <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-4">
+        <Card className="w-full text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300">
+            <IconAlert size={36} />
+          </div>
+          <p className="mb-6 text-xl text-slate-700 dark:text-slate-200">לא הצלחנו לטעון את השאלות.</p>
+          <Button onClick={load} size="lg">
+            <IconRotate size={22} />
+            נסי שוב
+          </Button>
+        </Card>
       </div>
     );
   }

@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getAllQuestions } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { Stars } from '../components/Stars';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { IconHome, IconRotate, IconPencil } from '../components/Icons';
 import { bigCelebrate } from '../components/confetti';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
@@ -34,7 +36,7 @@ export function QuickPractice() {
   if (done) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+        <Card className="p-8">
           <div className="mb-4 text-6xl">🎉</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
             כל הכבוד{progress.name ? `, ${progress.name}` : ''}!
@@ -44,24 +46,22 @@ export function QuickPractice() {
             <Stars count={Math.min(firstTry, 3)} size="text-5xl" />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <button
+            <Button
               onClick={() => {
                 setIndex(0);
                 setFirstTry(0);
                 setDone(false);
               }}
-              className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600"
             >
+              <IconRotate size={20} />
               עוד 5 שאלות
-            </button>
-            <Link
-              to="/"
-              className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-200"
-            >
+            </Button>
+            <Button to="/" variant="secondary">
+              <IconHome size={20} />
               חזרה לבית
-            </Link>
+            </Button>
           </div>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -81,7 +81,10 @@ export function QuickPractice() {
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4">
         <div className="mb-2 flex items-center justify-between text-base text-slate-500 dark:text-slate-400">
-          <span>✏️ תרגול מהיר</span>
+          <span className="inline-flex items-center gap-1.5">
+            <IconPencil size={16} />
+            תרגול מהיר
+          </span>
           <span>
             {index + 1}/{questions.length}
           </span>

@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getQuestionById } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { IconHome, IconRotate } from '../components/Icons';
 import { isDue } from '../lib/leitner';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
@@ -33,7 +35,7 @@ export function Review() {
   if (done || questions.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+        <Card className="p-8">
           <div className="mb-4 text-6xl">{questions.length === 0 ? '✨' : '🎉'}</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
             {questions.length === 0 ? 'אין מה לחזור כרגע' : 'סיימת את החזרה!'}
@@ -43,10 +45,11 @@ export function Review() {
               ? 'חזרה חכמה מופיעה כשמתקרב הזמן לרענן שאלות שלמדת. בינתיים אפשר ללמוד נושא חדש.'
               : 'חזרה במרווחים היא הדרך הכי טובה לזכור לטווח ארוך 💪'}
           </p>
-          <Link to="/" className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600">
+          <Button to="/" className="mx-auto">
+            <IconHome size={20} />
             חזרה לבית
-          </Link>
-        </div>
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -61,7 +64,10 @@ export function Review() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between text-base text-slate-500 dark:text-slate-400">
-        <span>🔄 חזרה חכמה</span>
+        <span className="inline-flex items-center gap-1.5">
+          <IconRotate size={16} />
+          חזרה חכמה
+        </span>
         <span>
           {index + 1}/{questions.length}
         </span>

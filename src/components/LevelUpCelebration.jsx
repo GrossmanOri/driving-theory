@@ -3,6 +3,7 @@ import { useProgressContext } from '../hooks/useProgressContext';
 import { levelInfo } from '../lib/levels';
 import { bigCelebrate } from './confetti';
 import { playLevelUp } from '../lib/sound';
+import { Button } from './Button';
 
 // Watches points and celebrates whenever the user reaches a new rank.
 export function LevelUpCelebration() {
@@ -36,12 +37,9 @@ export function LevelUpCelebration() {
         <div className="mb-3 text-7xl">{rank.icon}</div>
         <div className="mb-1 text-lg font-bold text-amber-500">עלית דרגה! 🎉</div>
         <h2 className="mb-4 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{rank.name}</h2>
-        <button
-          onClick={() => setRank(null)}
-          className="w-full rounded-2xl bg-sky-500 py-3 text-xl font-bold text-white hover:bg-sky-600"
-        >
+        <Button onClick={() => setRank(null)} size="lg">
           ממשיכים! 🚀
-        </button>
+        </Button>
       </div>
     </div>
   );

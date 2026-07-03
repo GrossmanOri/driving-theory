@@ -1,9 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getLessons, getTopic } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { Stars } from '../components/Stars';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { IconAlert, IconHome, IconRotate } from '../components/Icons';
 import { bigCelebrate } from '../components/confetti';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
@@ -28,8 +31,18 @@ export function Learn() {
   if (!topic || lesson.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-xl text-slate-500 dark:text-slate-400">השיעור לא נמצא.</p>
-        <Link to="/" className="mt-4 inline-block text-sky-600">חזרה לבית</Link>
+        <Card className="p-8">
+          <div className="mb-4 flex justify-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300">
+              <IconAlert size={28} />
+            </div>
+          </div>
+          <p className="mb-6 text-xl text-slate-500 dark:text-slate-400">השיעור לא נמצא.</p>
+          <Button to="/" variant="secondary" className="mx-auto">
+            <IconHome size={20} />
+            חזרה לבית
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -62,19 +75,21 @@ export function Learn() {
             <Stars count={stars} size="text-5xl" />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Link to="/" className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600">
+            <Button to="/">
+              <IconHome size={20} />
               חזרה לבית
-            </Link>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => {
                 setIndex(0);
                 setFirstTryCount(0);
                 setDone(false);
               }}
-              className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200"
             >
+              <IconRotate size={20} />
               לתרגל שוב
-            </button>
+            </Button>
           </div>
         </div>
       </div>

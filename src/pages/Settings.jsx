@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { useProgressContext } from '../hooks/useProgressContext';
+import { useAuth } from '../hooks/useAuth';
 import { speak, speechSupported } from '../lib/speech';
 import { useTheme } from '../hooks/useTheme';
 import { soundEnabled, setSoundEnabled, playCorrect } from '../lib/sound';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { IconLogOut, IconMoon, IconSettings, IconSun, IconVolume } from '../components/Icons';
 
 const SIZES = [
   { label: 'רגיל', px: 18 },
@@ -11,20 +15,21 @@ const SIZES = [
 ];
 
 const THEMES = [
-  { label: 'אוטומטי', value: 'system', icon: '🖥️' },
-  { label: 'בהיר', value: 'light', icon: '☀️' },
-  { label: 'כהה', value: 'dark', icon: '🌙' },
+  { label: 'אוטומטי', value: 'system', Icon: IconSettings },
+  { label: 'בהיר', value: 'light', Icon: IconSun },
+  { label: 'כהה', value: 'dark', Icon: IconMoon },
 ];
 
 export function Settings() {
   const { progress, setFontSize } = useProgressContext();
+  const { signOut } = useAuth();
   const { theme, set: setTheme } = useTheme();
   const [sound, setSound] = useState(soundEnabled());
   const current = progress.settings.fontSizePx;
 
-  const cardCls = 'mb-5 rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30';
   const h2Cls = 'mb-3 text-xl font-bold text-slate-700 dark:text-slate-200';
-  const optBase = 'flex-1 rounded-2xl border-2 py-4 font-bold transition';
+  const optBase =
+    'flex flex-1 items-center justify-center gap-2 rounded-2xl border-2 py-4 font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
   const optOn = 'border-sky-400 bg-sky-50 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300';
   const optOff =
     'border-slate-200 bg-white text-slate-600 hover:border-sky-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300';
@@ -34,7 +39,7 @@ export function Settings() {
       <h1 className="mb-5 text-3xl font-extrabold text-slate-800 dark:text-slate-100">הגדרות</h1>
 
       {/* Theme */}
-      <section className={cardCls}>
+      <Card className="mb-5">
         <h2 className={h2Cls}>מראה</h2>
         <p className="mb-3 text-base text-slate-500 dark:text-slate-400">
           "אוטומטי" עוקב אחרי המכשיר/הדפדפן שלך ומתחלף יחד איתו.
@@ -46,35 +51,39 @@ export function Settings() {
               onClick={() => setTheme(t.value)}
               className={`${optBase} ${theme === t.value ? optOn : optOff}`}
             >
-              {t.icon} {t.label}
+              <t.Icon size={18} /> {t.label}
             </button>
           ))}
         </div>
-      </section>
+      </Card>
 
       {/* Sound */}
-      <section className={cardCls}>
+      <Card className="mb-5">
         <h2 className={h2Cls}>צלילים ורטט</h2>
         <label className="flex items-center justify-between">
           <span className="text-lg text-slate-600 dark:text-slate-300">צלילי עידוד ורטט קטן</span>
           <button
+            type="button"
+            role="switch"
+            aria-checked={sound}
+            aria-label="צלילי עידוד ורטט"
             onClick={() => {
               const next = !sound;
               setSound(next);
               setSoundEnabled(next);
               if (next) playCorrect();
             }}
-            className={`h-8 w-14 rounded-full transition ${sound ? 'bg-green-400' : 'bg-slate-300 dark:bg-slate-600'}`}
+            className={`h-8 w-14 rounded-full transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 ${sound ? 'bg-green-400' : 'bg-slate-300 dark:bg-slate-600'}`}
           >
             <span
               className={`block h-7 w-7 rounded-full bg-white shadow transition ${sound ? 'translate-x-0' : '-translate-x-6'}`}
             />
           </button>
         </label>
-      </section>
+      </Card>
 
       {/* Text size */}
-      <section className={cardCls}>
+      <Card className="mb-5">
         <h2 className={h2Cls}>גודל הטקסט</h2>
         <div className="flex gap-3">
           {SIZES.map((s) => (
@@ -88,36 +97,41 @@ export function Settings() {
             </button>
           ))}
         </div>
-      </section>
+      </Card>
 
       {/* Read-aloud */}
-      <section className={cardCls}>
+      <Card className="mb-5">
         <h2 className="mb-2 text-xl font-bold text-slate-700 dark:text-slate-200">הקראה בקול</h2>
         {speechSupported() ? (
           <>
-            <p className="mb-3 text-base text-slate-500 dark:text-slate-400">
-              בכל שאלה והסבר יש כפתור 🔊 שמקריא את הטקסט בעברית.
+            <p className="mb-3 flex flex-wrap items-center gap-1 text-base text-slate-500 dark:text-slate-400">
+              בכל שאלה והסבר יש כפתור <IconVolume size={18} className="inline" /> שמקריא את הטקסט בעברית.
             </p>
-            <button
-              onClick={() => speak('שלום! ככה נשמעת ההקראה.')}
-              className="rounded-2xl bg-sky-50 px-5 py-3 text-lg font-bold text-sky-700 hover:bg-sky-100 dark:bg-sky-500/15 dark:text-sky-300"
-            >
-              🔊 לשמוע דוגמה
-            </button>
+            <Button variant="secondary" size="sm" onClick={() => speak('שלום! ככה נשמעת ההקראה.')}>
+              <IconVolume size={18} /> לשמוע דוגמה
+            </Button>
           </>
         ) : (
           <p className="text-base text-slate-500 dark:text-slate-400">הדפדפן הזה לא תומך בהקראה בקול.</p>
         )}
-      </section>
+      </Card>
 
       {/* Motion */}
-      <section className="rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+      <Card className="mb-5">
         <h2 className="mb-2 text-xl font-bold text-slate-700 dark:text-slate-200">תנועה ואנימציות</h2>
         <p className="text-base text-slate-500 dark:text-slate-400">
           האפליקציה מכבדת את הגדרת ה"הפחתת תנועה" של המכשיר שלך — אם היא מופעלת,
           הקונפטי והאנימציות יהיו עדינים יותר.
         </p>
-      </section>
+      </Card>
+
+      {/* Account */}
+      <Card>
+        <h2 className="mb-3 text-xl font-bold text-slate-700 dark:text-slate-200">חשבון</h2>
+        <Button variant="secondary" size="sm" onClick={signOut}>
+          <IconLogOut size={18} /> התנתקות
+        </Button>
+      </Card>
     </div>
   );
 }

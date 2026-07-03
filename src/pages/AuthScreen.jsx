@@ -119,15 +119,15 @@ export function AuthScreen() {
             <>
               <button
                 onClick={onGoogle}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white py-3.5 text-lg font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+                className="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white py-3.5 text-lg font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus-visible:ring-sky-500/40"
               >
                 <GoogleIcon />
                 המשך עם Google
               </button>
               <div className="my-5 flex items-center gap-3 text-sm text-slate-400">
-                <span className="h-px flex-1 bg-slate-200" />
+                <span className="h-px flex-1 bg-slate-200 dark:bg-slate-600" />
                 או עם אימייל
-                <span className="h-px flex-1 bg-slate-200" />
+                <span className="h-px flex-1 bg-slate-200 dark:bg-slate-600" />
               </div>
             </>
           )}
@@ -180,12 +180,12 @@ export function AuthScreen() {
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                 placeholder="------"
               />
-              <p className="rounded-xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700">
+              <p className="rounded-xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">
                 📨 לא רואים את המייל? כדאי לבדוק בתיקיית הספאם / "דואר זבל" — לפעמים הוא מגיע לשם.
               </p>
               <button
                 onClick={() => run(() => resend(email.trim()).then(() => setInfo('שלחנו קוד חדש 📧')))}
-                className="text-sm font-semibold text-sky-600 hover:underline"
+                className="rounded-lg text-sm font-semibold text-sky-600 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:text-sky-400 dark:focus-visible:ring-sky-500/40"
               >
                 לא קיבלתי — שלחו לי קוד שוב
               </button>
@@ -193,16 +193,16 @@ export function AuthScreen() {
           )}
 
           {error && (
-            <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-center text-sm text-amber-700">{error}</p>
+            <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-center text-sm text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">{error}</p>
           )}
           {info && (
-            <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">{info}</p>
+            <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">{info}</p>
           )}
 
           <button
             onClick={mode === 'signIn' ? onSignIn : mode === 'signUp' ? onSignUp : onConfirm}
             disabled={busy}
-            className="mt-6 w-full rounded-2xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-lg font-bold text-white shadow-lg shadow-sky-500/30 transition hover:from-sky-600 hover:to-sky-700 disabled:opacity-50"
+            className="mt-6 w-full rounded-2xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-lg font-bold text-white shadow-lg shadow-sky-500/30 transition hover:from-sky-600 hover:to-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
           >
             {busy ? 'רגע…' : mode === 'signIn' ? 'התחברות' : mode === 'signUp' ? 'יצירת חשבון' : 'אישור'}
           </button>
@@ -216,7 +216,7 @@ export function AuthScreen() {
                   setError('');
                   setInfo('');
                 }}
-                className="font-bold text-sky-600 hover:underline"
+                className="rounded-lg font-bold text-sky-600 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:text-sky-400 dark:focus-visible:ring-sky-500/40"
               >
                 {mode === 'signIn' ? 'להרשמה' : 'להתחברות'}
               </button>

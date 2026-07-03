@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getAllQuestions } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bigCelebrate } from '../components/confetti';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { IconHome, IconTarget } from '../components/Icons';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
 import { fetchExplanation } from '../lib/api';
@@ -29,7 +31,7 @@ export function DailyChallenge() {
   if (done || (alreadyDone && index === 0)) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+        <Card className="p-8">
           <div className="mb-4 text-6xl">🏆</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
             {done ? `סיימת! +${CHALLENGE_BONUS} בונוס` : 'סיימת את האתגר היומי'}
@@ -37,10 +39,11 @@ export function DailyChallenge() {
           <p className="mb-6 text-xl text-slate-500 dark:text-slate-400">
             {done ? 'כל הכבוד על ההתמדה 💛' : 'מחר מחכה אתגר חדש 🎯'}
           </p>
-          <Link to="/" className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600">
+          <Button to="/" className="mx-auto">
+            <IconHome size={20} />
             חזרה לבית
-          </Link>
-        </div>
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -62,7 +65,10 @@ export function DailyChallenge() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between text-base text-slate-500 dark:text-slate-400">
-        <span>🎯 אתגר יומי</span>
+        <span className="inline-flex items-center gap-1.5">
+          <IconTarget size={16} />
+          אתגר יומי
+        </span>
         <span>
           {index + 1}/{questions.length}
         </span>

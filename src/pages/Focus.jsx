@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getQuestionsByTopic, getTopics } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bigCelebrate } from '../components/confetti';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { IconHome, IconTarget } from '../components/Icons';
 import { bumpDaily } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
 import { fetchExplanation } from '../lib/api';
@@ -46,14 +48,15 @@ export function Focus() {
   if (done) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+        <Card className="p-8">
           <div className="mb-4 text-6xl">💪</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">כל הכבוד!</h2>
           <p className="mb-6 text-xl text-slate-500 dark:text-slate-400">חיזקת נושא שהיה פחות חזק 🎯</p>
-          <Link to="/" className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600">
+          <Button to="/" className="mx-auto">
+            <IconHome size={20} />
             חזרה לבית
-          </Link>
-        </div>
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -71,7 +74,10 @@ export function Focus() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between text-base text-slate-500 dark:text-slate-400">
-        <span>🎯 תרגול ממוקד · {topicName}</span>
+        <span className="inline-flex items-center gap-1.5">
+          <IconTarget size={16} />
+          תרגול ממוקד · {topicName}
+        </span>
         <span>
           {index + 1}/{questions.length}
         </span>

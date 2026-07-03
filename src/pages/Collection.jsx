@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { getAllQuestions } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
+import { Card } from '../components/Card';
+import { IconLock } from '../components/Icons';
 
 export function Collection() {
   const { progress } = useProgressContext();
@@ -29,17 +31,17 @@ export function Collection() {
       <h1 className="mb-1 text-3xl font-extrabold text-slate-800 dark:text-slate-100">אוסף התמרורים 🚸</h1>
       <p className="mb-4 text-lg text-slate-500 dark:text-slate-400">כל תמרור ששולטים בו — נצבע ונכנס לאוסף!</p>
 
-      <div className="mb-6 rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+      <Card className="mb-6">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
             אספת {collected} מתוך {total}
           </span>
-          <span className="text-lg font-bold text-amber-600">{pct}%</span>
+          <span className="text-lg font-bold text-amber-600 dark:text-amber-300">{pct}%</span>
         </div>
         <div className="h-4 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
           <div className="h-full rounded-full bg-amber-400 transition-all" style={{ width: `${pct}%` }} />
         </div>
-      </div>
+      </Card>
 
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
         {stickers.map((s) => (
@@ -59,7 +61,9 @@ export function Collection() {
                   loading="lazy"
                   className="h-full w-full object-contain opacity-20 grayscale"
                 />
-                <span className="absolute inset-0 flex items-center justify-center text-2xl">🔒</span>
+                <span className="absolute inset-0 flex items-center justify-center text-slate-400">
+                  <IconLock size={24} />
+                </span>
               </div>
             )}
           </div>

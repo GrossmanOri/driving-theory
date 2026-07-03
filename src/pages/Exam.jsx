@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { buildExam } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bigCelebrate } from '../components/confetti';
 import { saveExam, getExams, readiness } from '../lib/examHistory';
+import { Button } from '../components/Button';
+import { IconHome, IconRotate, IconTarget, IconClock } from '../components/Icons';
 
 const EXAM_COUNT = 30;
 const PASS_MARK = 26;
@@ -111,8 +112,12 @@ export function Exam() {
           <label className="mb-6 flex items-center justify-between rounded-2xl bg-slate-50 p-4 dark:bg-slate-700">
             <span className="text-lg font-bold text-slate-700 dark:text-slate-200">טיימר פעיל</span>
             <button
+              type="button"
+              role="switch"
+              aria-checked={timerOn}
+              aria-label="טיימר פעיל"
               onClick={() => setExamTimer(!timerOn)}
-              className={`h-8 w-14 rounded-full transition ${timerOn ? 'bg-green-400' : 'bg-slate-300'}`}
+              className={`h-8 w-14 rounded-full transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 ${timerOn ? 'bg-green-400' : 'bg-slate-300 dark:bg-slate-600'}`}
             >
               <span
                 className={`block h-7 w-7 rounded-full bg-white shadow transition ${
@@ -121,12 +126,9 @@ export function Exam() {
               />
             </button>
           </label>
-          <button
-            onClick={start}
-            className="w-full rounded-2xl bg-sky-500 py-4 text-2xl font-bold text-white hover:bg-sky-600"
-          >
+          <Button onClick={start} size="lg">
             מתחילים!
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -157,9 +159,9 @@ export function Exam() {
               <h3 className="mb-3 text-xl font-bold text-slate-700 dark:text-slate-200">שאלות לחזור עליהן:</h3>
               <div className="space-y-3">
                 {missed.map((a, i) => (
-                  <div key={i} className="rounded-2xl bg-amber-50 p-4">
+                  <div key={i} className="rounded-2xl bg-amber-50 p-4 dark:bg-amber-500/10">
                     <p className="mb-1 font-semibold text-slate-700 dark:text-slate-200">{a.question.text}</p>
-                    <p className="text-green-700">
+                    <p className="text-green-700 dark:text-green-300">
                       ✅ {a.question.options.find((o) => o.correct)?.text}
                     </p>
                   </div>
@@ -169,18 +171,18 @@ export function Exam() {
           )}
 
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <button
-              onClick={() => setPhase('intro')}
-              className="rounded-2xl bg-sky-500 px-6 py-3 text-xl font-bold text-white hover:bg-sky-600"
-            >
+            <Button onClick={() => setPhase('intro')}>
+              <IconRotate size={20} />
               מבחן נוסף
-            </button>
-            <Link to="/mistakes" className="rounded-2xl bg-purple-400 px-6 py-3 text-xl font-bold text-white hover:bg-purple-500">
+            </Button>
+            <Button to="/mistakes" variant="accent">
+              <IconTarget size={20} />
               לתרגל את הטעויות
-            </Link>
-            <Link to="/" className="rounded-2xl bg-slate-100 px-6 py-3 text-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600">
+            </Button>
+            <Button to="/" variant="secondary">
+              <IconHome size={20} />
               לבית
-            </Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -196,8 +198,9 @@ export function Exam() {
           שאלה {index + 1}/{questions.length}
         </span>
         {timerOn && (
-          <span className={`rounded-full px-3 py-1 text-lg font-bold ${timeLeft < 60 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600 dark:text-slate-300'}`}>
-            ⏱️ {fmt(timeLeft)}
+          <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-lg font-bold tabular-nums ${timeLeft < 60 ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300'}`}>
+            <IconClock size={18} />
+            {fmt(timeLeft)}
           </span>
         )}
       </div>

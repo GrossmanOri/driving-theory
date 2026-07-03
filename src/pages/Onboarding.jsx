@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { useAuth } from '../hooks/useAuth';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { Button } from '../components/Button';
+
+const genderBase =
+  'rounded-2xl border-2 py-4 text-lg font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
 
 // Shown once, right after a new user's first login, to capture name + gender.
 // Gender drives Hebrew grammar throughout the app.
@@ -20,12 +24,9 @@ export function Onboarding() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4 py-10 dark:bg-slate-900">
       {/* Top controls: logout + theme */}
       <div className="absolute top-4 left-4 z-10 flex items-center gap-1">
-        <button
-          onClick={signOut}
-          className="rounded-full px-3 py-1 text-base text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-        >
+        <Button variant="ghost" size="sm" onClick={signOut}>
           יציאה
-        </button>
+        </Button>
         <ThemeToggle />
       </div>
 
@@ -57,7 +58,7 @@ export function Onboarding() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setGender('f')}
-              className={`rounded-2xl border-2 py-4 text-lg font-bold transition ${
+              className={`${genderBase} ${
                 gender === 'f'
                   ? 'border-pink-400 bg-pink-50 text-pink-600 dark:bg-pink-500/15'
                   : 'border-slate-200 bg-white text-slate-600 hover:border-pink-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300'
@@ -67,7 +68,7 @@ export function Onboarding() {
             </button>
             <button
               onClick={() => setGender('m')}
-              className={`rounded-2xl border-2 py-4 text-lg font-bold transition ${
+              className={`${genderBase} ${
                 gender === 'm'
                   ? 'border-sky-400 bg-sky-50 text-sky-600 dark:bg-sky-500/15'
                   : 'border-slate-200 bg-white text-slate-600 hover:border-sky-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300'
@@ -80,7 +81,7 @@ export function Onboarding() {
           <button
             onClick={submit}
             disabled={!ready}
-            className="mt-6 w-full rounded-2xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-lg font-bold text-white shadow-lg shadow-sky-500/30 transition hover:from-sky-600 hover:to-sky-700 disabled:opacity-40"
+            className="mt-6 w-full rounded-2xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-lg font-bold text-white shadow-lg shadow-sky-500/30 transition hover:from-sky-600 hover:to-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none"
           >
             יאללה, מתחילים! 🚀
           </button>

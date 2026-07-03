@@ -3,6 +3,8 @@ import { speak, speechSupported } from '../lib/speech';
 import { gw } from '../lib/gender';
 import { playCorrect, playWrong } from '../lib/sound';
 import { celebrate } from './confetti';
+import { Button } from './Button';
+import { IconVolume, IconLightbulb } from './Icons';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -114,11 +116,11 @@ export function QuestionCard({
         {speechSupported() && (
           <button
             onClick={() => speak(question.text)}
-            className="shrink-0 rounded-full bg-sky-50 px-3 py-2 text-xl text-sky-600 hover:bg-sky-100 dark:bg-sky-500/15 dark:text-sky-300"
+            className="shrink-0 rounded-full bg-sky-50 p-2.5 text-sky-600 transition hover:bg-sky-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 active:scale-95 dark:bg-sky-500/15 dark:text-sky-300 dark:focus-visible:ring-sky-500/40"
             aria-label="הקראת השאלה"
             title={`${gw('הקריאי', 'הקרא')} לי`}
           >
-            🔊
+            <IconVolume size={24} />
           </button>
         )}
       </div>
@@ -132,7 +134,7 @@ export function QuestionCard({
           const showHint = hint && !resolved && opt.id === correctOptionId;
 
           let cls =
-            'flex min-h-[56px] items-center gap-3 rounded-2xl border-2 px-4 py-3 text-right text-xl transition';
+            'flex min-h-[56px] items-center gap-3 rounded-2xl border-2 px-4 py-3 text-right text-xl transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
           if (showCorrect) cls += ' border-green-400 bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300';
           else if (examMode && isSelected) cls += ' border-sky-400 bg-sky-50 text-sky-800 dark:bg-sky-500/15 dark:text-sky-300';
           else if (resolved) cls += ' border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500';
@@ -182,34 +184,38 @@ export function QuestionCard({
               {speechSupported() && (
                 <button
                   onClick={() => speak(explainText)}
-                  className="mt-3 rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm hover:bg-sky-100 dark:bg-slate-700 dark:text-sky-300"
+                  className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-base text-sky-700 shadow-sm transition hover:bg-sky-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 active:scale-95 dark:bg-slate-700 dark:text-sky-300 dark:focus-visible:ring-sky-500/40"
                 >
-                  🔊 {gw('הקריאי', 'הקרא')} לי
+                  <IconVolume size={18} /> {gw('הקריאי', 'הקרא')} לי
                 </button>
               )}
             </>
           ) : (
             <div className="text-center">
-              <button
+              <Button
                 onClick={handleExplain}
                 disabled={explainLoading || !onExplain}
-                className="rounded-full bg-sky-500 px-6 py-3 text-base font-bold text-white shadow-sm transition hover:bg-sky-600 disabled:opacity-60"
+                size="sm"
+                className="rounded-full"
               >
-                {explainLoading ? 'חושבים על הסבר… 🤔' : '💡 הסבירו לי בקלות'}
-              </button>
-              {explainError && <p className="mt-2 text-sm text-amber-600">{explainError}</p>}
+                {explainLoading ? (
+                  'חושבים על הסבר… 🤔'
+                ) : (
+                  <>
+                    <IconLightbulb size={18} /> הסבירו לי בקלות
+                  </>
+                )}
+              </Button>
+              {explainError && <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">{explainError}</p>}
             </div>
           )}
         </div>
       )}
 
       {resolved && (
-        <button
-          onClick={() => onNext(!hadMistake)}
-          className="mt-6 w-full rounded-2xl bg-green-500 py-4 text-2xl font-bold text-white shadow-md transition hover:bg-green-600"
-        >
+        <Button onClick={() => onNext(!hadMistake)} variant="success" size="lg" className="mt-6">
           {nextLabel}
-        </button>
+        </Button>
       )}
     </div>
   );
