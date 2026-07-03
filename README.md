@@ -53,7 +53,7 @@ src/
 
 ## ⚠️ נתוני ה-seed אינם המאגר הרשמי
 
-הקובץ `src/data/seed.ts` מכיל ~16 שאלות לדוגמה שנכתבו לצורכי פיתוח בלבד,
+הקובץ `src/data/seed.js` מכיל ~16 שאלות לדוגמה שנכתבו לצורכי פיתוח בלבד,
 ב-3–4 נושאים. הן מסומנות בבירור (`export const SEED = true`).
 **אין להתייחס אליהן כשאלות רשמיות.**
 
@@ -62,12 +62,12 @@ src/
 הסכמה כבר מוכנה לקליטת המאגר הרשמי. כדי לייבא:
 
 1. הורידי את קובץ ה-JSON/CSV של מאגר דרגה B מ-data.gov.il / gov.il.
-2. כתבי סקריפט המרה (למשל `scripts/import.ts`) הממפה כל רשומה ל-`Question`:
+2. כתבי סקריפט המרה (למשל `scripts/import.js`) הממפה כל רשומה ל-`Question`:
 
    ```ts
    interface Question {
      id: string;
-     topicId: string;       // מיפוי לקטגוריות שב-src/data/seed.ts -> topics
+     topicId: string;       // מיפוי לקטגוריות שב-src/data/seed.js -> topics
      imageUrl?: string;     // קישור לתמונת התמרור
      text: string;
      options: { id: string; text: string; correct: boolean }[];
@@ -76,8 +76,8 @@ src/
    }
    ```
 
-3. שמרי את הפלט כ-`src/data/official.ts` המייצא `officialQuestions: Question[]`.
-4. בקובץ `src/data/loader.ts` החליפי את `const allQuestions = seedQuestions`
+3. שמרי את הפלט כ-`src/data/official.js` המייצא `officialQuestions: Question[]`.
+4. בקובץ `src/data/loader.js` החליפי את `const allQuestions = seedQuestions`
    ב-`const allQuestions = officialQuestions`. אף קובץ אחר לא צריך להשתנות.
 
 ## נגישות

@@ -10,7 +10,7 @@ A Hebrew (RTL) driving-theory study web app for the user's teen niece (Mia), bui
   - Study modes: Quick Practice (5 random), Lessons, Smart Review (Leitner spaced-rep — `/review`), Mistake bank, Weak-spot Focus, Sign Flashcards, 60s Blitz, Daily Challenge, Full Exam (30Q/40min/26-pass with readiness %).
   - Fun: synthesized sound+haptics (mute in Settings), level-up celebration popup, journey car-on-road on Home, surprise bonus points, gentle hint after 2 misses.
 - **CORS fixed** on API Gateway (was a live bug — `/progress` preflight returned 404, progress wasn't saving). Now origin `*`, headers `authorization,content-type`, methods GET/POST/OPTIONS. Verified 204 + correct headers.
-- **In progress / NEXT:** deploy the AI explanations using **free Google Gemini** (see How to resume). All frontend + a Lambda are already written and committed, gated behind `EXPLAIN_ENABLED` (currently `false` in `src/config.ts`).
+- **In progress / NEXT:** deploy the AI explanations using **free Google Gemini** (see How to resume). All frontend + a Lambda are already written and committed, gated behind `EXPLAIN_ENABLED` (currently `false` in `src/config.js`).
 
 ## Decisions made (and why)
 - **All-AWS stack** (S3+CloudFront / API Gateway / Lambda / DynamoDB / Cognito) — user explicitly wants AWS resume experience; rejected Supabase/Firebase/Vercel.
@@ -22,9 +22,9 @@ A Hebrew (RTL) driving-theory study web app for the user's teen niece (Mia), bui
 - **EXPLAIN_ENABLED flag** — keeps the "explain" button hidden until the backend exists, so demos don't error.
 
 ## Key files & pointers
-- `src/config.ts` — `API_BASE`, Cognito IDs, `EXPLAIN_ENABLED` (flip to `true` after deploy), `COGNITO_DOMAIN`/`GOOGLE_ENABLED` (for deferred Google sign-in).
+- `src/config.js` — `API_BASE`, Cognito IDs, `EXPLAIN_ENABLED` (flip to `true` after deploy), `COGNITO_DOMAIN`/`GOOGLE_ENABLED` (for deferred Google sign-in).
 - `backend/explain/index.mjs` + `package.json` + `README.md` — the explanation Lambda, **currently written for Anthropic — must be rewritten for Gemini**. Has `@anthropic-ai/sdk` dep; Gemini can use plain `fetch` (no deps → inline-pasteable, no zip).
-- `src/lib/api.ts` → `fetchExplanation(questionId)` — frontend caller, POSTs to `/explain`. Already wired into `QuestionCard` via `onExplain`, passed from `Learn.tsx`/`Mistakes.tsx` gated on `EXPLAIN_ENABLED`.
+- `src/lib/api.js` → `fetchExplanation(questionId)` — frontend caller, POSTs to `/explain`. Already wired into `QuestionCard` via `onExplain`, passed from `Learn.jsx`/`Mistakes.jsx` gated on `EXPLAIN_ENABLED`.
 - `backend/lambda/index.mjs` — the working `theory-api` Lambda (questions + progress).
 - Memory file `~/.claude/projects/-Users-origrossman/memory/driving-theory-deploy.md` — all AWS resource IDs + redeploy commands.
 
@@ -40,13 +40,13 @@ A Hebrew (RTL) driving-theory study web app for the user's teen niece (Mia), bui
 2. **Rewrite `backend/explain/index.mjs`** to call Gemini instead of Anthropic: use `fetch` to `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=...` (or current free vision model). Send the question text + 4 options (mark correct) + the sign image (fetch the gov.il `imageUrl`, base64, as an `inline_data` part) + a Hebrew system instruction (simple, encouraging, ADHD/dyslexia-friendly, **gender-neutral**, 2-3 short sentences, explain WHY). Keep the GetItem→cache-on-`explanation`→UpdateItem logic. Drop the `@anthropic-ai/sdk` dep so it's inline-pasteable. Key in env var `GOOGLE_API_KEY`, `QUESTIONS_TABLE=TheoryQuestions`.
 3. **Create Lambda `theory-explain`** (Node 22) in console, paste code inline, set env vars, timeout 30s, attach `AmazonDynamoDBFullAccess`. Test with `{"requestContext":{"authorizer":{"jwt":{"claims":{"sub":"x"}}}},"body":"{\"questionId\":\"Q...\"}"}` (pick a real questionId, ideally one WITH an image to test vision).
 4. **API Gateway** `ds3xpsvhx3`: add route **POST `/explain`** → attach integration to `theory-explain` Lambda. (CORS already on.) Attach the **cognito** JWT authorizer to it.
-5. Flip `EXPLAIN_ENABLED = true` in `src/config.ts`, commit/push.
+5. Flip `EXPLAIN_ENABLED = true` in `src/config.js`, commit/push.
 6. **Redeploy frontend** (CloudShell): `cd driving-theory && git pull && npm run build && aws s3 sync dist/ s3://theory-app-web-ori --delete && aws cloudfront create-invalidation --distribution-id E3U251UNW6ZOD --paths "/*"`.
 7. Verify the "💡 הסבירו לי בקלות" button appears after answering and returns a Hebrew explanation; check vision works on an image question.
 
 ## Optional backlog (all deferred, in rough priority)
 - SES email so Cognito codes stop hitting spam (best with a domain).
-- Tighten "mastered" — require surviving a review cycle, not one lucky guess (makes progress % honest). Lives in `src/hooks/useProgress.ts` `recordAnswer`.
+- Tighten "mastered" — require surviving a review cycle, not one lucky guess (makes progress % honest). Lives in `src/hooks/useProgress.js` `recordAnswer`.
 - Mirror sign images to S3 (run a small download script from the user's Mac where gov.il returns 200, since AWS IPs are blocked) for robust vision.
 - Google sign-in (Cognito Hosted UI domain + Google OAuth creds; set `COGNITO_DOMAIN` in config).
 - Custom domain (cosmetic).

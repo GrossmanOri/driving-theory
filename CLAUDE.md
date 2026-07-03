@@ -14,19 +14,19 @@
 נערה מתבגרת שקשה לה ללמוד. ידידותי, צעיר, נעים, מעודד. עברית RTL בלבד.
 
 ## סטאק
-Vite + React + TypeScript · Tailwind v4 (פלאגין `@tailwindcss/vite`) · react-router-dom
+Vite + React + JavaScript · Tailwind v4 (פלאגין `@tailwindcss/vite`) · react-router-dom
 · canvas-confetti. בלי backend/DB/login. כל המצב ב-localStorage דרך `useProgress`.
 
 ## כללים טכניים
 - כל הטקסט בממשק בעברית, `dir="rtl"` / `lang="he"` בשורש.
 - קומפוננטות קטנות וקריאות. בלי over-engineering.
-- מקור אמת יחיד לנתונים: `src/data/loader.ts`.
+- מקור אמת יחיד לנתונים: `src/data/loader.js`.
 - אין להמציא שאלות רשמיות — רק נתוני seed מסומנים. ראה README לייבוא המאגר.
 - צבע אף פעם לא האות היחיד: תמיד אייקון + טקסט. כבד `prefers-reduced-motion`.
 
 ## איפה מה
-- מצב/נקודות/כוכבים/טעויות/Leitner → `src/hooks/useProgress.ts`
-- לוגיקת חזרה מרווחת → `src/lib/leitner.ts`
-- הקראה בקול → `src/lib/speech.ts`
-- כרטיס שאלה (לב המערכת) → `src/components/QuestionCard.tsx`
+- מצב/נקודות/כוכבים/טעויות/Leitner → `src/hooks/useProgress.js`
+- לוגיקת חזרה מרווחת → `src/lib/leitner.js`
+- הקראה בקול → `src/lib/speech.js`
+- כרטיס שאלה (לב המערכת) → `src/components/QuestionCard.jsx`
 - מצבים: בית / שיעור / טעויות / מבחן / הגדרות → `src/pages/*`
