@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { speak, speechSupported } from '../lib/speech';
 import { useTheme } from '../hooks/useTheme';
 import { soundEnabled, setSoundEnabled, playCorrect } from '../lib/sound';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { signInWithRedirect } from 'aws-amplify/auth';
-import { useAuth } from '../hooks/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { GOOGLE_ENABLED } from '../config';
 
@@ -139,6 +139,7 @@ export function AuthScreen() {
                 <input
                   type="email"
                   dir="ltr"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
@@ -150,6 +151,7 @@ export function AuthScreen() {
                 <input
                   type="password"
                   dir="ltr"
+                  autoComplete={mode === 'signUp' ? 'new-password' : 'current-password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && (mode === 'signIn' ? onSignIn() : onSignUp())}
@@ -170,6 +172,9 @@ export function AuthScreen() {
               <input
                 type="text"
                 dir="ltr"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                aria-label="קוד אימות"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"

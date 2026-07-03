@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { getAllQuestions, getLessons, getTopics } from '../data/loader';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { Stars } from '../components/Stars';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
 import { cheer, greeting } from '../lib/greeting';

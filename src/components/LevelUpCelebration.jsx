@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { levelInfo } from '../lib/levels';
 import { bigCelebrate } from './confetti';
 import { playLevelUp } from '../lib/sound';
@@ -23,7 +23,7 @@ export function LevelUpCelebration() {
       playLevelUp();
       bigCelebrate();
     }
-  }, [level.levelNumber, loaded]);
+  }, [level.levelNumber, level.rank.name, level.rank.icon, loaded]);
 
   if (!rank) return null;
 

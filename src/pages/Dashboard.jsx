@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { getAllQuestions, getQuestionById, getQuestionsByTopic, getTopics } from '../data/loader';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { isDue } from '../lib/leitner';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
 import { greeting } from '../lib/greeting';

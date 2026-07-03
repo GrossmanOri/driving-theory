@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useProgressContext } from '../hooks/ProgressContext';
-import { useAuth } from '../hooks/AuthContext';
+import { useProgressContext } from '../hooks/useProgressContext';
+import { useAuth } from '../hooks/useAuth';
 import { levelInfo } from '../lib/levels';
 import { ThemeToggle } from './ThemeToggle';
 

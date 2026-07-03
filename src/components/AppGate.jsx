@@ -6,17 +6,23 @@ import { setQuestions } from '../data/loader';
 export function AppGate({ children }) {
   const [state, setState] = useState('loading');
 
-  const load = () => {
-    setState('loading');
+  const fetchBank = () =>
     fetchQuestions()
       .then((qs) => {
         setQuestions(qs);
         setState('ready');
       })
       .catch(() => setState('error'));
+
+  const load = () => {
+    setState('loading');
+    fetchBank();
   };
 
-  useEffect(load, []);
+  useEffect(() => {
+    fetchBank();
+
+  }, []);
 
   if (state === 'loading') {
     return (

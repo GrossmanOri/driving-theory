@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllQuestions } from '../data/loader';
 import { playCorrect, playWrong, playFinish } from '../lib/sound';
@@ -16,6 +16,10 @@ function shuffle(a) {
   return r;
 }
 
+function loadBest() {
+  return Number(localStorage.getItem(BEST_KEY) || 0);
+}
+
 export function Blitz() {
   const deck = useMemo(() => shuffle(getAllQuestions()), []);
   const [phase, setPhase] = useState('intro');
@@ -23,23 +27,25 @@ export function Blitz() {
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(DURATION);
   const [flash, setFlash] = useState(null);
-  const best = useRef(Number(localStorage.getItem(BEST_KEY) || 0));
+  const [best, setBest] = useState(loadBest);
 
   useEffect(() => {
-    if (phase !== 'play') return;
-    if (time <= 0) {
-      if (score > best.current) {
-        best.current = score;
-        localStorage.setItem(BEST_KEY, String(score));
+    if (phase !== 'play' || time <= 0) return;
+    const id = setTimeout(() => {
+      if (time <= 1) {
+        // Time's up — lock in the score and celebrate.
+        if (score > best) {
+          setBest(score);
+          localStorage.setItem(BEST_KEY, String(score));
+        }
+        playFinish();
+        bigCelebrate();
+        setPhase('done');
       }
-      playFinish();
-      bigCelebrate();
-      setPhase('done');
-      return;
-    }
-    const id = setTimeout(() => setTime((t) => t - 1), 1000);
+      setTime(time - 1);
+    }, 1000);
     return () => clearTimeout(id);
-  }, [phase, time, score]);
+  }, [phase, time, score, best]);
 
   const start = () => {
     setPos(0);
@@ -68,7 +74,7 @@ export function Blitz() {
           <div className="mb-3 text-6xl">⚡</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">בליץ — דקה אחת</h2>
           <p className="mb-6 text-lg text-slate-500 dark:text-slate-400">
-            כמה תשובות נכונות תספיקו ב-60 שניות? שיא נוכחי: {best.current} 🏆
+            כמה תשובות נכונות תספיקו ב-60 שניות? שיא נוכחי: {best} 🏆
           </p>
           <button onClick={start} className="w-full rounded-2xl bg-amber-500 py-4 text-2xl font-bold text-white hover:bg-amber-600">
             יאללה! ⚡
@@ -84,7 +90,7 @@ export function Blitz() {
         <div className="rounded-3xl bg-white p-8 text-center shadow-sm dark:bg-slate-800 dark:shadow-black/30">
           <div className="mb-3 text-6xl">🎉</div>
           <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{score} נכונות!</h2>
-          <p className="mb-6 text-lg text-slate-500 dark:text-slate-400">השיא שלך: {best.current} 🏆</p>
+          <p className="mb-6 text-lg text-slate-500 dark:text-slate-400">השיא שלך: {best} 🏆</p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button onClick={start} className="rounded-2xl bg-amber-500 px-6 py-3 text-xl font-bold text-white hover:bg-amber-600">
               עוד פעם ⚡

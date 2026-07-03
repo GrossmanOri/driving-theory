@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getQuestionById } from '../data/loader';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { isDue } from '../lib/leitner';
 import { bumpDaily } from '../lib/dailyGoal';
@@ -9,20 +9,23 @@ import { recordActivity } from '../lib/streak';
 import { fetchExplanation } from '../lib/api';
 import { EXPLAIN_ENABLED } from '../config';
 
+// Builds the due list once, when the page opens.
+function dueQuestions(cards) {
+  const now = Date.now();
+  return Object.entries(cards)
+    .filter(([, card]) => isDue(card, now))
+    .map(([id]) => getQuestionById(id))
+    .filter(Boolean)
+    .slice(0, 20);
+}
+
 // Spaced-repetition review: shows questions whose Leitner box says they're due,
 // so knowledge is re-tested right before it would be forgotten.
 export function Review() {
   const { progress, recordAnswer, addBonus } = useProgressContext();
 
-  const questions = useMemo(() => {
-    const now = Date.now();
-    return Object.entries(progress.cards)
-      .filter(([, card]) => isDue(card, now))
-      .map(([id]) => getQuestionById(id))
-      .filter(Boolean)
-      .slice(0, 20);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const questions = useMemo(() => dueQuestions(progress.cards), []);
 
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState(questions.length === 0);

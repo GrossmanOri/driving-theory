@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { buildExam } from '../data/loader';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bigCelebrate } from '../components/confetti';
 import { saveExam, getExams, readiness } from '../lib/examHistory';
@@ -28,12 +28,12 @@ export function Exam() {
 
   // Countdown when the timer is enabled and the exam is running.
   useEffect(() => {
-    if (phase !== 'running' || !timerOn) return;
-    if (timeLeft <= 0) {
-      setPhase('result');
-      return;
-    }
-    const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
+    if (phase !== 'running' || !timerOn || timeLeft <= 0) return;
+    const id = setTimeout(() => {
+      // Time's up — hand in the exam as-is.
+      if (timeLeft <= 1) setPhase('result');
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
     return () => clearTimeout(id);
   }, [phase, timerOn, timeLeft]);
 
@@ -65,7 +65,7 @@ export function Exam() {
       saveExam(result.correct, result.total);
       if (result.passed) bigCelebrate();
     }
-  }, [phase]);
+  }, [phase, result.correct, result.total, result.passed]);
 
   // --- INTRO ---
   if (phase === 'intro') {

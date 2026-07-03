@@ -70,10 +70,11 @@ async function generate(q) {
     if (img) parts.unshift(img);
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+  // Key goes in a header (not the query string) so it never lands in access logs.
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY },
     body: JSON.stringify({
       system_instruction: { parts: [{ text: SYSTEM }] },
       contents: [{ role: 'user', parts }],

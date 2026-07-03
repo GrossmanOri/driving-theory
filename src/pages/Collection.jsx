@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { getAllQuestions } from '../data/loader';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 
 export function Collection() {
   const { progress } = useProgressContext();

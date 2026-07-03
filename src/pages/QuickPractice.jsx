@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllQuestions } from '../data/loader';
-import { useProgressContext } from '../hooks/ProgressContext';
+import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { Stars } from '../components/Stars';
 import { bigCelebrate } from '../components/confetti';
@@ -12,18 +12,20 @@ import { EXPLAIN_ENABLED } from '../config';
 
 const SIZE = 5;
 
+function pickRandom(pool, n) {
+  const all = [...pool];
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [all[i], all[j]] = [all[j], all[i]];
+  }
+  return all.slice(0, n);
+}
+
 // Zero-friction "just a few questions" practice — random, no topic to pick.
 export function QuickPractice() {
   const { progress, recordAnswer, addBonus } = useProgressContext();
 
-  const questions = useMemo(() => {
-    const all = [...getAllQuestions()];
-    for (let i = all.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [all[i], all[j]] = [all[j], all[i]];
-    }
-    return all.slice(0, SIZE);
-  }, []);
+  const questions = useMemo(() => pickRandom(getAllQuestions(), SIZE), []);
 
   const [index, setIndex] = useState(0);
   const [firstTry, setFirstTry] = useState(0);

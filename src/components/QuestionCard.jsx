@@ -13,6 +13,11 @@ function shuffle(arr) {
   return a;
 }
 
+// ~15% lucky surprise bonus on a clean first-try answer.
+function luckyRoll() {
+  return Math.random() < 0.15;
+}
+
 export function QuestionCard({
   question,
   onNext,
@@ -22,7 +27,7 @@ export function QuestionCard({
   examMode = false,
   nextLabel = 'המשך',
 }) {
-  const options = useMemo(() => shuffle(question.options), [question.id]);
+  const options = useMemo(() => shuffle(question.options), [question.options]);
   const [selected, setSelected] = useState(null);
   const [hadMistake, setHadMistake] = useState(false);
   const [wrongCount, setWrongCount] = useState(0);
@@ -63,8 +68,7 @@ export function QuestionCard({
       setSelected(optId);
       setResolved(true);
       const pts = onAward?.(question.id, true, firstTry) ?? 0;
-      // ~15% lucky surprise bonus on a clean first-try answer.
-      const lucky = firstTry && pts > 0 && onBonus && Math.random() < 0.15;
+      const lucky = firstTry && pts > 0 && onBonus && luckyRoll();
       if (lucky) {
         onBonus(pts); // double it
         setBonus(true);

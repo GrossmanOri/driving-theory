@@ -1,7 +1,9 @@
 import './amplify';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AuthProvider, useAuth } from './hooks/AuthContext';
-import { ProgressProvider, useProgressContext } from './hooks/ProgressContext';
+import { AuthProvider } from './hooks/AuthContext';
+import { useAuth } from './hooks/useAuth';
+import { ProgressProvider } from './hooks/ProgressContext';
+import { useProgressContext } from './hooks/useProgressContext';
 import { AppGate } from './components/AppGate';
 import { setGender } from './lib/gender';
 import { TopBar } from './components/TopBar';

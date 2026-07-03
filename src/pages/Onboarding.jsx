@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useProgressContext } from '../hooks/ProgressContext';
-import { useAuth } from '../hooks/AuthContext';
+import { useProgressContext } from '../hooks/useProgressContext';
+import { useAuth } from '../hooks/useAuth';
 import { ThemeToggle } from '../components/ThemeToggle';
 
 // Shown once, right after a new user's first login, to capture name + gender.
