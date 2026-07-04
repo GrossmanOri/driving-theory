@@ -2,11 +2,10 @@ import { Link } from 'react-router-dom';
 import { getAllQuestions, getLessons, getTopics } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { Card, CardLink } from '../components/Card';
+import { HeroScene } from '../components/HeroScene';
 import {
   IconArrowLeft,
-  IconCar,
   IconChart,
-  IconFlag,
   IconGraduation,
   IconLayers,
   IconPencil,
@@ -124,24 +123,9 @@ export function Home() {
       </h1>
       <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
 
-      {/* Journey: the car drives (right → left) toward the flag as progress grows */}
-      <div className="relative mb-5 h-10">
-        <div className="absolute top-1/2 h-3 w-full -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
-        {/* dashed road center line */}
-        <div className="absolute top-1/2 right-1 left-1 -translate-y-1/2 border-t-2 border-dashed border-white/70 dark:border-slate-500" />
-        <div
-          className="absolute top-1/2 right-0 h-3 -translate-y-1/2 rounded-full bg-sky-500 transition-all duration-700"
-          style={{ width: `${pct}%` }}
-        />
-        <span
-          className="absolute top-1/2 -translate-y-1/2 text-sky-600 transition-all duration-700 dark:text-sky-400"
-          style={{ left: `calc(${100 - pct}% - 14px)` }}
-        >
-          <IconCar size={28} />
-        </span>
-        <span className="absolute top-1/2 left-0 -translate-y-1/2 text-amber-500">
-          <IconFlag size={22} />
-        </span>
+      {/* Journey: תיאו drives (right → left) toward the flag as progress grows */}
+      <div className="mb-5">
+        <HeroScene pct={pct} />
       </div>
 
       {/* Hero CTAs: practice (lowest friction) + full exam, side by side on sm+ */}
