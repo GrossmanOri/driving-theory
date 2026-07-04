@@ -114,7 +114,6 @@ export function Home() {
   const dailyDone = daily >= DAILY_GOAL;
 
   const signs = uniqueSigns();
-  const signStrip = signs.slice(0, 6);
   const collectionThumbs = signs.slice(0, 3);
   const signCount = signs.length;
 
@@ -124,22 +123,6 @@ export function Home() {
         {greeting(progress.name)} <span className="align-middle">👋</span>
       </h1>
       <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
-
-      {/* Sign strip: a taste of the real bank — tilted mini-cards that straighten on hover */}
-      {signStrip.length > 0 && (
-        <div className="mb-5 flex justify-center">
-          {signStrip.map((src, i) => (
-            <div
-              key={src}
-              className={`h-14 w-14 rounded-xl border border-slate-200/70 bg-white p-1 shadow-sm transition-transform duration-200 hover:rotate-0 dark:border-slate-700 ${
-                i % 2 === 0 ? 'rotate-3' : '-rotate-2'
-              } ${i > 0 ? '-ms-3' : ''}`}
-            >
-              <img src={src} alt="תמרור" loading="lazy" className="h-full w-full object-contain" />
-            </div>
-          ))}
-        </div>
-      )}
 
       {/* Journey: the car drives (right → left) toward the flag as progress grows */}
       <div className="relative mb-5 h-10">
