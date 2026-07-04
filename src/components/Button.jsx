@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-2xl font-bold transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 disabled:opacity-50 disabled:pointer-events-none';
+  'inline-flex items-center justify-center gap-2 rounded-xl font-bold transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 disabled:opacity-50 disabled:pointer-events-none';
 
 const variants = {
-  primary: 'bg-sky-500 text-white hover:bg-sky-600 shadow-md shadow-sky-500/20',
-  success: 'bg-green-500 text-white hover:bg-green-600 shadow-md shadow-green-500/20',
-  accent: 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-md shadow-emerald-500/20',
-  warning: 'bg-amber-500 text-white hover:bg-amber-600 shadow-md shadow-amber-500/20',
+  primary: 'bg-sky-600 text-white hover:bg-sky-700 shadow-sm',
+  success: 'bg-green-600 text-white hover:bg-green-700 shadow-sm',
+  accent: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm',
+  warning: 'bg-amber-500 text-white hover:bg-amber-600 shadow-sm',
   secondary:
     'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600',
   ghost: 'text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700',

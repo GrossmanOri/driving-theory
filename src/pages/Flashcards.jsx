@@ -48,7 +48,7 @@ export function Flashcards() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-1 flex items-center justify-between">
-        <h1 className="text-3xl font-extrabold text-slate-800 dark:text-slate-100">כרטיסיות תמרורים 🃏</h1>
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">כרטיסיות תמרורים</h1>
         <span className="text-base text-slate-500 dark:text-slate-400">
           {i + 1}/{cards.length}
         </span>
@@ -59,19 +59,19 @@ export function Flashcards() {
         type="button"
         onClick={() => setFlipped((f) => !f)}
         aria-pressed={flipped}
-        className="flip-scene block w-full rounded-3xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40"
+        className="flip-scene block w-full rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40"
       >
         <div className={`flip-inner relative min-h-[20rem] w-full ${flipped ? 'is-flipped' : ''}`}>
           {/* FRONT — the sign */}
-          <div className="flip-face absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
-            <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+          <div className="flip-face absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-2xl border border-slate-200/70 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
               <img src={card.imageUrl} alt="תמרור" className="h-44 w-44 object-contain" />
             </div>
-            <p className="text-lg text-slate-400 dark:text-slate-500">לחצו לגילוי 👆</p>
+            <p className="text-lg text-slate-400 dark:text-slate-500">לחצו לגילוי</p>
           </div>
           {/* BACK — the meaning */}
-          <div className="flip-face flip-back absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
-            <div className="rounded-3xl bg-white p-3 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+          <div className="flip-face flip-back absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-2xl border border-slate-200/70 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
               <img src={card.imageUrl} alt="תמרור" className="h-28 w-28 object-contain" />
             </div>
             <p className="text-center text-2xl font-bold text-sky-700 dark:text-sky-300">{card.meaning}</p>

@@ -73,8 +73,7 @@ export function Blitz() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
         <Card className="p-8 text-center">
-          <div className="mb-3 text-6xl">⚡</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">בליץ — דקה אחת</h2>
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">בליץ — דקה אחת</h2>
           <p className="mb-6 text-lg text-slate-500 dark:text-slate-400">
             כמה תשובות נכונות תספיקו ב-60 שניות? שיא נוכחי: {best} 🏆
           </p>
@@ -91,7 +90,7 @@ export function Blitz() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <Card className="p-8 text-center">
           <div className="mb-3 text-6xl">🎉</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{score} נכונות!</h2>
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">{score} נכונות!</h2>
           <p className="mb-6 text-lg text-slate-500 dark:text-slate-400">השיא שלך: {best} 🏆</p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button onClick={start} variant="warning">
@@ -114,13 +113,13 @@ export function Blitz() {
       className={`mx-auto max-w-2xl px-4 py-6 transition-colors ${flash === 'ok' ? 'bg-green-50 dark:bg-green-500/10' : flash === 'no' ? 'bg-amber-50 dark:bg-amber-500/10' : ''}`}
     >
       <div className="mb-4 flex items-center justify-between">
-        <span className="inline-flex items-center gap-1.5 text-xl font-extrabold text-slate-700 dark:text-slate-200">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1 text-xl font-bold text-slate-700 dark:border-slate-700 dark:text-slate-200">
           <IconZap size={20} className="text-amber-500" />
           {score}
         </span>
-        <span className={`text-2xl font-extrabold tabular-nums ${ringColor}`}>{time}s</span>
+        <span className={`inline-flex items-center rounded-full border border-slate-200 px-3 py-1 text-xl font-bold tabular-nums dark:border-slate-700 ${ringColor}`}>{time}s</span>
       </div>
-      <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+      <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
         {q.imageUrl && (
           <div className="mb-4 flex justify-center">
             <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
@@ -134,7 +133,7 @@ export function Blitz() {
             <button
               key={o.id}
               onClick={() => answer(o.correct)}
-              className="min-h-[52px] rounded-2xl border-2 border-slate-200 bg-white px-4 py-2 text-right text-lg text-slate-700 transition hover:border-amber-300 hover:bg-amber-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-amber-500/10 dark:focus-visible:ring-amber-500/40"
+              className="min-h-[52px] rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-right text-lg text-slate-700 transition hover:border-amber-300 hover:bg-amber-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-amber-500/10 dark:focus-visible:ring-amber-500/40"
             >
               {o.text}
             </button>

@@ -38,7 +38,7 @@ export function QuickPractice() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <Card className="p-8">
           <div className="mb-4 text-6xl">🎉</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">
             כל הכבוד{progress.name ? `, ${progress.name}` : ''}!
           </h2>
           <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">סיימת תרגול מהיר 💪</p>
@@ -91,7 +91,7 @@ export function QuickPractice() {
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
           <div
-            className="h-full rounded-full bg-sky-400 transition-all"
+            className="h-full rounded-full bg-sky-600 transition-all"
             style={{ width: `${(index / questions.length) * 100}%` }}
           />
         </div>

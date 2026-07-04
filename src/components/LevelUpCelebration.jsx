@@ -33,7 +33,7 @@ export function LevelUpCelebration() {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
       onClick={() => setRank(null)}
     >
-      <div className="animate-pop-in w-full max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl dark:bg-slate-800">
+      <div className="animate-pop-in w-full max-w-sm rounded-2xl bg-white p-8 text-center shadow-xl dark:bg-slate-800">
         <div className="mb-3 text-7xl">{rank.icon}</div>
         <div className="mb-1 text-lg font-bold text-amber-500">עלית דרגה! 🎉</div>
         <h2 className="mb-4 text-3xl font-extrabold text-slate-800 dark:text-slate-100">{rank.name}</h2>

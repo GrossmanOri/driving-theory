@@ -4,7 +4,7 @@ import { gw } from '../lib/gender';
 import { playCorrect, playWrong } from '../lib/sound';
 import { celebrate } from './confetti';
 import { Button } from './Button';
-import { IconVolume, IconLightbulb } from './Icons';
+import { IconVolume, IconLightbulb, IconCircle, IconCheck } from './Icons';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -97,11 +97,11 @@ export function QuestionCard({
   const hint = !examMode && wrongCount >= 2; // reveal a soft hint after 2 misses
 
   return (
-    <div className="animate-pop-in relative mx-auto w-full max-w-2xl rounded-3xl bg-white p-6 shadow-sm sm:p-8 dark:bg-slate-800 dark:shadow-black/30">
+    <div className="animate-pop-in relative mx-auto w-full max-w-2xl rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8 dark:border-slate-700 dark:bg-slate-800">
       {/* Sign / image — the visual hero, on a clean panel so it pops in any theme */}
       {question.imageUrl && (
         <div className="mb-5 flex justify-center">
-          <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+          <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
             <img
               src={question.imageUrl}
               alt="תמרור"
@@ -134,7 +134,7 @@ export function QuestionCard({
           const showHint = hint && !resolved && opt.id === correctOptionId;
 
           let cls =
-            'flex min-h-[56px] items-center gap-3 rounded-2xl border-2 px-4 py-3 text-right text-xl transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
+            'flex min-h-[56px] items-center gap-3 rounded-xl border-2 px-4 py-3 text-right text-xl transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
           if (showCorrect) cls += ' border-green-400 bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300';
           else if (examMode && isSelected) cls += ' border-sky-400 bg-sky-50 text-sky-800 dark:bg-sky-500/15 dark:text-sky-300';
           else if (resolved) cls += ' border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500';
@@ -149,8 +149,16 @@ export function QuestionCard({
               disabled={resolved}
               className={cls}
             >
-              <span className="text-2xl">
-                {showCorrect ? '✅' : examMode && isSelected ? '🔵' : showHint ? '💡' : '⭕'}
+              <span className="shrink-0">
+                {showCorrect ? (
+                  <IconCheck size={24} className="text-green-600 dark:text-green-400" />
+                ) : examMode && isSelected ? (
+                  <IconCircle size={24} fill="currentColor" className="text-sky-600 dark:text-sky-400" />
+                ) : showHint ? (
+                  <IconLightbulb size={24} className="text-green-600 dark:text-green-400" />
+                ) : (
+                  <IconCircle size={24} className="text-slate-400 dark:text-slate-500" />
+                )}
               </span>
               <span className="flex-1">{opt.text}</span>
             </button>

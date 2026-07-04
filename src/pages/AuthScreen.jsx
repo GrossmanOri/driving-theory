@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { signInWithRedirect } from 'aws-amplify/auth';
 import { useAuth } from '../hooks/useAuth';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { Logo } from '../components/Logo';
 import { GOOGLE_ENABLED } from '../config';
 
 function friendlyError(e) {
@@ -84,33 +85,27 @@ export function AuthScreen() {
   const onGoogle = () => signInWithRedirect({ provider: 'Google' });
 
   const title =
-    mode === 'signUp' ? 'יוצרים חשבון חדש' : mode === 'confirm' ? 'אימות המייל' : 'כיף שחזרת!';
+    mode === 'signUp' ? 'יוצרים חשבון חדש' : mode === 'confirm' ? 'אימות המייל' : 'התחברות';
   const subtitle =
     mode === 'confirm'
       ? `הקוד נשלח אל ${email}`
-      : 'הדרך הכי נעימה ללמוד לתיאוריה';
+      : 'כיף שחזרת! הדרך הכי נעימה ללמוד לתיאוריה';
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4 py-10 dark:bg-slate-900">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10 dark:bg-slate-900">
       <div className="absolute top-4 left-4 z-10">
         <ThemeToggle />
       </div>
-      {/* soft brand background */}
-      <div className="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full bg-sky-200/40 blur-3xl dark:bg-sky-500/10" />
-      <div className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-500/10" />
 
-      <div className="relative w-full max-w-md">
+      <div className="w-full max-w-md">
         {/* Brand */}
-        <div className="mb-7 text-center">
-          <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-emerald-500 text-3xl shadow-lg shadow-sky-500/30">
-            🚗
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">לומדים תיאוריה</h1>
+        <div className="mb-7 flex justify-center">
+          <Logo size={44} />
         </div>
 
-        <div className="rounded-3xl border border-slate-100 bg-white/90 p-7 shadow-xl shadow-slate-200/60 backdrop-blur dark:border-slate-700 dark:bg-slate-800/90 dark:shadow-black/30">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-7 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <div className="mb-6 text-center">
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">{title}</h2>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{title}</h1>
             <p className="mt-1 text-base text-slate-500 dark:text-slate-400">{subtitle}</p>
           </div>
 
@@ -119,7 +114,7 @@ export function AuthScreen() {
             <>
               <button
                 onClick={onGoogle}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white py-3.5 text-lg font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus-visible:ring-sky-500/40"
+                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-3.5 text-lg font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus-visible:ring-sky-500/40"
               >
                 <GoogleIcon />
                 המשך עם Google
@@ -142,7 +137,7 @@ export function AuthScreen() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   placeholder="name@example.com"
                 />
               </div>
@@ -155,7 +150,7 @@ export function AuthScreen() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && (mode === 'signIn' ? onSignIn() : onSignUp())}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-lg text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   placeholder="••••••••"
                 />
                 {mode === 'signUp' && (
@@ -177,7 +172,7 @@ export function AuthScreen() {
                 aria-label="קוד אימות"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-3xl tracking-[0.4em] text-slate-800 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                 placeholder="------"
               />
               <p className="rounded-xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">
@@ -202,7 +197,7 @@ export function AuthScreen() {
           <button
             onClick={mode === 'signIn' ? onSignIn : mode === 'signUp' ? onSignUp : onConfirm}
             disabled={busy}
-            className="mt-6 w-full rounded-2xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-lg font-bold text-white shadow-lg shadow-sky-500/30 transition hover:from-sky-600 hover:to-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+            className="mt-6 w-full rounded-xl bg-sky-600 py-4 text-lg font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
           >
             {busy ? 'רגע…' : mode === 'signIn' ? 'התחברות' : mode === 'signUp' ? 'יצירת חשבון' : 'אישור'}
           </button>

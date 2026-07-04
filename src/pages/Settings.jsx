@@ -27,16 +27,16 @@ export function Settings() {
   const [sound, setSound] = useState(soundEnabled());
   const current = progress.settings.fontSizePx;
 
-  const h2Cls = 'mb-3 text-xl font-bold text-slate-700 dark:text-slate-200';
+  const h2Cls = 'mb-3 text-lg font-bold text-slate-700 dark:text-slate-200';
   const optBase =
-    'flex flex-1 items-center justify-center gap-2 rounded-2xl border-2 py-4 font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
-  const optOn = 'border-sky-400 bg-sky-50 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300';
+    'flex flex-1 items-center justify-center gap-2 rounded-xl border py-4 font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
+  const optOn = 'border-sky-600 bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300';
   const optOff =
     'border-slate-200 bg-white text-slate-600 hover:border-sky-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300';
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="mb-5 text-3xl font-extrabold text-slate-800 dark:text-slate-100">הגדרות</h1>
+      <h1 className="mb-5 text-2xl font-bold text-slate-800 dark:text-slate-100">הגדרות</h1>
 
       {/* Theme */}
       <Card className="mb-5">
@@ -101,7 +101,7 @@ export function Settings() {
 
       {/* Read-aloud */}
       <Card className="mb-5">
-        <h2 className="mb-2 text-xl font-bold text-slate-700 dark:text-slate-200">הקראה בקול</h2>
+        <h2 className="mb-2 text-lg font-bold text-slate-700 dark:text-slate-200">הקראה בקול</h2>
         {speechSupported() ? (
           <>
             <p className="mb-3 flex flex-wrap items-center gap-1 text-base text-slate-500 dark:text-slate-400">
@@ -118,7 +118,7 @@ export function Settings() {
 
       {/* Motion */}
       <Card className="mb-5">
-        <h2 className="mb-2 text-xl font-bold text-slate-700 dark:text-slate-200">תנועה ואנימציות</h2>
+        <h2 className="mb-2 text-lg font-bold text-slate-700 dark:text-slate-200">תנועה ואנימציות</h2>
         <p className="text-base text-slate-500 dark:text-slate-400">
           האפליקציה מכבדת את הגדרת ה"הפחתת תנועה" של המכשיר שלך — אם היא מופעלת,
           הקונפטי והאנימציות יהיו עדינים יותר.
@@ -127,7 +127,7 @@ export function Settings() {
 
       {/* Account */}
       <Card>
-        <h2 className="mb-3 text-xl font-bold text-slate-700 dark:text-slate-200">חשבון</h2>
+        <h2 className="mb-3 text-lg font-bold text-slate-700 dark:text-slate-200">חשבון</h2>
         <Button variant="secondary" size="sm" onClick={signOut}>
           <IconLogOut size={18} /> התנתקות
         </Button>

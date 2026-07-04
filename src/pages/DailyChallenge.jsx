@@ -33,7 +33,7 @@ export function DailyChallenge() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <Card className="p-8">
           <div className="mb-4 text-6xl">🏆</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">
             {done ? `סיימת! +${CHALLENGE_BONUS} בונוס` : 'סיימת את האתגר היומי'}
           </h2>
           <p className="mb-6 text-xl text-slate-500 dark:text-slate-400">

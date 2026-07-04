@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
-const cardBase = 'rounded-3xl bg-white p-5 shadow-sm dark:bg-slate-800 dark:shadow-black/30';
+const cardBase =
+  'rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800';
 
 export function Card({ className = '', children, ...rest }) {
   return (
@@ -14,7 +15,7 @@ export function CardLink({ to, className = '', children, ...rest }) {
   return (
     <Link
       to={to}
-      className={`${cardBase} transition hover:shadow-md focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 focus-visible:outline-none ${className}`}
+      className={`${cardBase} transition hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 focus-visible:outline-none ${className}`}
       {...rest}
     >
       {children}

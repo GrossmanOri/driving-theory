@@ -37,7 +37,7 @@ export function Review() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <Card className="p-8">
           <div className="mb-4 text-6xl">{questions.length === 0 ? '✨' : '🎉'}</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">
             {questions.length === 0 ? 'אין מה לחזור כרגע' : 'סיימת את החזרה!'}
           </h2>
           <p className="mb-6 text-xl text-slate-500 dark:text-slate-400">

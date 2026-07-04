@@ -3,9 +3,10 @@ import { useProgressContext } from '../hooks/useProgressContext';
 import { useAuth } from '../hooks/useAuth';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { Button } from '../components/Button';
+import { LogoMark } from '../components/Logo';
 
 const genderBase =
-  'rounded-2xl border-2 py-4 text-lg font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
+  'rounded-xl border-2 py-4 text-lg font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
 
 // Shown once, right after a new user's first login, to capture name + gender.
 // Gender drives Hebrew grammar throughout the app.
@@ -21,7 +22,7 @@ export function Onboarding() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4 py-10 dark:bg-slate-900">
+    <div className="relative flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10 dark:bg-slate-900">
       {/* Top controls: logout + theme */}
       <div className="absolute top-4 left-4 z-10 flex items-center gap-1">
         <Button variant="ghost" size="sm" onClick={signOut}>
@@ -30,17 +31,14 @@ export function Onboarding() {
         <ThemeToggle />
       </div>
 
-      <div className="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full bg-sky-200/40 blur-3xl dark:bg-sky-500/10" />
-      <div className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-500/10" />
-
-      <div className="relative w-full max-w-md text-center">
-        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-sky-500 to-emerald-500 text-4xl shadow-lg shadow-sky-500/30">
-          👋
+      <div className="w-full max-w-md text-center">
+        <div className="mx-auto mb-5 flex justify-center">
+          <LogoMark size={64} />
         </div>
-        <h1 className="mb-2 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">ברוכים הבאים!</h1>
+        <h1 className="mb-2 text-2xl font-bold text-slate-900 dark:text-slate-100">ברוכים הבאים!</h1>
         <p className="mb-8 text-lg text-slate-500 dark:text-slate-400">כמה פרטים קטנים ומתחילים</p>
 
-        <div className="rounded-3xl border border-slate-100 bg-white/90 p-7 shadow-xl shadow-slate-200/60 backdrop-blur dark:border-slate-700 dark:bg-slate-800/90 dark:shadow-black/30">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-7 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <label className="mb-2 block text-right text-sm font-semibold text-slate-600 dark:text-slate-300">איך לקרוא לך?</label>
           <input
             autoFocus
@@ -48,7 +46,7 @@ export function Onboarding() {
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && submit()}
             maxLength={20}
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-2xl font-bold text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:focus:bg-slate-700"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-2xl font-bold text-slate-800 transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:focus:bg-slate-700"
             placeholder="השם שלך"
           />
 
@@ -81,7 +79,7 @@ export function Onboarding() {
           <button
             onClick={submit}
             disabled={!ready}
-            className="mt-6 w-full rounded-2xl bg-gradient-to-l from-sky-500 to-sky-600 py-4 text-lg font-bold text-white shadow-lg shadow-sky-500/30 transition hover:from-sky-600 hover:to-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none"
+            className="mt-6 w-full rounded-xl bg-sky-600 py-4 text-lg font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none"
           >
             יאללה, מתחילים! 🚀
           </button>

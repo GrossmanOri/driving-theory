@@ -4,7 +4,8 @@ import { useAuth } from '../hooks/useAuth';
 import { levelInfo } from '../lib/levels';
 import { ThemeToggle } from './ThemeToggle';
 import { Button } from './Button';
-import { IconArrowRight, IconLogOut } from './Icons';
+import { Logo } from './Logo';
+import { IconArrowRight, IconLogOut, IconStar } from './Icons';
 
 export function TopBar() {
   const { progress, totalStars } = useProgressContext();
@@ -14,7 +15,7 @@ export function TopBar() {
   const level = levelInfo(progress.points);
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-3 bg-white/90 px-4 py-3 shadow-sm backdrop-blur dark:bg-slate-800/90 dark:shadow-black/30">
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 dark:border-slate-700 dark:bg-slate-900">
       <div className="flex items-center gap-2">
         {showBack ? (
           <Button to="/" variant="ghost" size="sm" aria-label="בית">
@@ -23,19 +24,25 @@ export function TopBar() {
             <span className="hidden sm:inline">בית</span>
           </Button>
         ) : (
-          <span className="text-xl font-extrabold text-sky-600 dark:text-sky-400">לומדים תיאוריה 🚗</span>
+          <Link to="/" aria-label="לומדים תיאוריה">
+            <Logo size={32} />
+          </Link>
         )}
       </div>
-      <div className="flex items-center gap-2 text-lg font-bold">
+      <div className="flex items-center gap-2 text-sm">
         <Link
           to="/dashboard"
-          className="rounded-full bg-sky-50 px-3 py-1 text-base text-sky-700 hover:bg-sky-100 dark:bg-sky-500/15 dark:text-sky-300"
+          className="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1 text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-600"
           title={level.rank.name}
         >
           {level.rank.icon} <span className="hidden sm:inline">{level.rank.name}</span>
         </Link>
-        <span className="rounded-full bg-amber-50 px-3 py-1 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300">⭐ {totalStars}</span>
-        <span className="hidden rounded-full bg-green-50 px-3 py-1 text-green-600 sm:inline-flex dark:bg-green-500/15 dark:text-green-300">{progress.points} נק׳</span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1 text-slate-600 dark:border-slate-700 dark:text-slate-300">
+          <IconStar size={16} fill="currentColor" className="text-amber-400" /> {totalStars}
+        </span>
+        <span className="hidden items-center rounded-full border border-slate-200 px-3 py-1 text-slate-600 sm:inline-flex dark:border-slate-700 dark:text-slate-300">
+          {progress.points} נק׳
+        </span>
         <ThemeToggle />
         <Button
           onClick={signOut}

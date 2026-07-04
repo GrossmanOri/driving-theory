@@ -67,17 +67,12 @@ function OnboardingGate() {
 
   return (
     <BrowserRouter>
-      <div className="relative min-h-screen overflow-x-hidden">
-        {/* Soft gradient blobs behind the app shell (desktop breathing room) */}
-        <div className="pointer-events-none fixed -top-32 -right-24 h-96 w-96 rounded-full bg-sky-200/40 blur-3xl dark:bg-sky-500/10" />
-        <div className="pointer-events-none fixed -bottom-32 -left-24 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-500/10" />
-        <div className="relative z-10">
-          <LevelUpCelebration />
-          <TopBar />
-          <main className="min-h-screen pb-12">
-            <AppRoutes />
-          </main>
-        </div>
+      <div className="min-h-screen overflow-x-hidden">
+        <LevelUpCelebration />
+        <TopBar />
+        <main className="min-h-screen pb-12">
+          <AppRoutes />
+        </main>
       </div>
     </BrowserRouter>
   );

@@ -50,7 +50,7 @@ export function Focus() {
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <Card className="p-8">
           <div className="mb-4 text-6xl">💪</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">כל הכבוד!</h2>
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">כל הכבוד!</h2>
           <p className="mb-6 text-xl text-slate-500 dark:text-slate-400">חיזקת נושא שהיה פחות חזק 🎯</p>
           <Button to="/" className="mx-auto">
             <IconHome size={20} />

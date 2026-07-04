@@ -4,6 +4,7 @@ import { useProgressContext } from '../hooks/useProgressContext';
 import { QuestionCard } from '../components/QuestionCard';
 import { bigCelebrate } from '../components/confetti';
 import { saveExam, getExams, readiness } from '../lib/examHistory';
+import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { IconHome, IconRotate, IconTarget, IconClock } from '../components/Icons';
 
@@ -74,9 +75,8 @@ export function Exam() {
     const ready = readiness();
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <div className="rounded-3xl bg-white p-8 shadow-sm dark:bg-slate-800 dark:shadow-black/30">
-          <div className="mb-3 text-center text-6xl">🎓</div>
-          <h2 className="mb-1 text-center text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+        <Card className="p-8">
+          <h2 className="mb-1 text-center text-2xl font-bold text-slate-800 dark:text-slate-100">
             מבחן תיאוריה מלא
           </h2>
           <p className="mb-5 text-center text-base text-slate-500 dark:text-slate-400">
@@ -85,14 +85,14 @@ export function Exam() {
 
           {/* Readiness + best score */}
           {exams.best && (
-            <div className="mb-5 rounded-2xl bg-gradient-to-l from-sky-50 to-emerald-50 p-4 dark:from-sky-500/10 dark:to-emerald-500/10">
+            <div className="mb-5 rounded-xl bg-slate-50 p-4 dark:bg-slate-700/50">
               <div className="mb-1 flex items-center justify-between">
                 <span className="text-base font-bold text-slate-700 dark:text-slate-200">המוכנות שלך</span>
                 <span className="text-base font-bold text-sky-600 dark:text-sky-300">{ready}%</span>
               </div>
-              <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-slate-700">
+              <div className="h-2 overflow-hidden rounded-full bg-white dark:bg-slate-700">
                 <div
-                  className={`h-full rounded-full transition-all ${ready >= 87 ? 'bg-green-400' : 'bg-sky-400'}`}
+                  className={`h-full rounded-full transition-all ${ready >= 87 ? 'bg-green-500' : 'bg-sky-600'}`}
                   style={{ width: `${ready}%` }}
                 />
               </div>
@@ -109,7 +109,7 @@ export function Exam() {
             <li>⏱️ 40 דקות — כמו במבחן האמיתי</li>
             <li>💛 גם אם לא עוברים — לומדים מזה.</li>
           </ul>
-          <label className="mb-6 flex items-center justify-between rounded-2xl bg-slate-50 p-4 dark:bg-slate-700">
+          <label className="mb-6 flex items-center justify-between rounded-xl bg-slate-50 p-4 dark:bg-slate-700">
             <span className="text-lg font-bold text-slate-700 dark:text-slate-200">טיימר פעיל</span>
             <button
               type="button"
@@ -129,7 +129,7 @@ export function Exam() {
           <Button onClick={start} size="lg">
             מתחילים!
           </Button>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -139,9 +139,9 @@ export function Exam() {
     const missed = answers.filter((a) => !a.correct);
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <div className="rounded-3xl bg-white p-8 text-center shadow-sm dark:bg-slate-800 dark:shadow-black/30">
+        <Card className="p-8 text-center">
           <div className="mb-3 text-6xl">{result.passed ? '🎉' : '💪'}</div>
-          <h2 className="mb-2 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+          <h2 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">
             {progress.name ? `${progress.name}, ` : ''}
             {result.passed ? 'עברת! מדהים!' : 'כל הכבוד שסיימת!'}
           </h2>
@@ -159,7 +159,7 @@ export function Exam() {
               <h3 className="mb-3 text-xl font-bold text-slate-700 dark:text-slate-200">שאלות לחזור עליהן:</h3>
               <div className="space-y-3">
                 {missed.map((a, i) => (
-                  <div key={i} className="rounded-2xl bg-amber-50 p-4 dark:bg-amber-500/10">
+                  <div key={i} className="rounded-xl bg-amber-50 p-4 dark:bg-amber-500/10">
                     <p className="mb-1 font-semibold text-slate-700 dark:text-slate-200">{a.question.text}</p>
                     <p className="text-green-700 dark:text-green-300">
                       ✅ {a.question.options.find((o) => o.correct)?.text}
@@ -184,7 +184,7 @@ export function Exam() {
               לבית
             </Button>
           </div>
-        </div>
+        </Card>
       </div>
     );
   }
