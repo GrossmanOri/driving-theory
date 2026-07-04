@@ -15,7 +15,7 @@ export function CardLink({ to, className = '', children, ...rest }) {
   return (
     <Link
       to={to}
-      className={`${cardBase} transition hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 focus-visible:outline-none ${className}`}
+      className={`${cardBase} transition hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-600 focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40 focus-visible:outline-none ${className}`}
       {...rest}
     >
       {children}

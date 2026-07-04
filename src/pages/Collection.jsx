@@ -47,8 +47,10 @@ export function Collection() {
         {stickers.map((s) => (
           <div
             key={s.imageUrl}
-            className={`flex aspect-square items-center justify-center rounded-xl border p-2 ${
-              s.collected ? 'border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800' : 'border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800'
+            className={`flex aspect-square items-center justify-center rounded-xl border p-2 transition ${
+              s.collected
+                ? 'border-slate-200 bg-white shadow-sm ring-1 ring-amber-200 hover:-translate-y-0.5 dark:border-slate-700 dark:bg-slate-800 dark:ring-amber-500/30'
+                : 'border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800'
             }`}
           >
             {s.collected ? (

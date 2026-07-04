@@ -7,7 +7,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { IconHome, IconRotate, IconPencil } from '../components/Icons';
 import { bigCelebrate } from '../components/confetti';
-import { bumpDaily } from '../lib/dailyGoal';
+import { bumpDaily, DAILY_GOAL } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
 import { fetchExplanation } from '../lib/api';
 import { EXPLAIN_ENABLED } from '../config';
@@ -32,6 +32,7 @@ export function QuickPractice() {
   const [index, setIndex] = useState(0);
   const [firstTry, setFirstTry] = useState(0);
   const [done, setDone] = useState(false);
+  const [goalToast, setGoalToast] = useState(false);
 
   if (done) {
     return (
@@ -43,8 +44,9 @@ export function QuickPractice() {
           </h2>
           <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">סיימת תרגול מהיר 💪</p>
           <div className="mb-6 flex justify-center">
-            <Stars count={Math.min(firstTry, 3)} size="text-5xl" />
+            <Stars count={Math.min(firstTry, 3)} size="text-5xl" animate />
           </div>
+          <GoalToast show={goalToast} />
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button
               onClick={() => {
@@ -67,8 +69,13 @@ export function QuickPractice() {
   }
 
   const handleNext = (firstTryCorrect) => {
-    bumpDaily();
+    const dailyCount = bumpDaily();
     recordActivity();
+    if (dailyCount === DAILY_GOAL) {
+      bigCelebrate();
+      setGoalToast(true);
+      setTimeout(() => setGoalToast(false), 2500);
+    }
     if (firstTryCorrect) setFirstTry((n) => n + 1);
     if (index + 1 < questions.length) setIndex(index + 1);
     else {
@@ -105,6 +112,19 @@ export function QuickPractice() {
         onNext={handleNext}
         nextLabel={index + 1 < questions.length ? 'הבא' : 'סיום'}
       />
+      <GoalToast show={goalToast} />
+    </div>
+  );
+}
+
+// Celebratory banner when the daily goal is reached mid-session.
+function GoalToast({ show }) {
+  if (!show) return null;
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-20 z-40 flex justify-center px-4" aria-hidden="true">
+      <div className="animate-bounce-in rounded-2xl bg-amber-50 px-6 py-3 text-center text-lg font-black text-amber-600 shadow-xl ring-2 ring-amber-300 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-400">
+        היעד היומי הושלם! 🎯
+      </div>
     </div>
   );
 }

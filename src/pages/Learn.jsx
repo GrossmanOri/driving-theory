@@ -8,7 +8,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { IconAlert, IconHome, IconRotate } from '../components/Icons';
 import { bigCelebrate } from '../components/confetti';
-import { bumpDaily } from '../lib/dailyGoal';
+import { bumpDaily, DAILY_GOAL } from '../lib/dailyGoal';
 import { recordActivity } from '../lib/streak';
 import { fetchExplanation } from '../lib/api';
 import { EXPLAIN_ENABLED } from '../config';
@@ -25,6 +25,7 @@ export function Learn() {
   const [index, setIndex] = useState(0);
   const [firstTryCount, setFirstTryCount] = useState(0);
   const [done, setDone] = useState(false);
+  const [goalToast, setGoalToast] = useState(false);
 
   const stars = useMemo(() => Math.min(firstTryCount, 3), [firstTryCount]);
 
@@ -48,8 +49,13 @@ export function Learn() {
   }
 
   const handleNext = (firstTryCorrect) => {
-    bumpDaily();
+    const dailyCount = bumpDaily();
     recordActivity();
+    if (dailyCount === DAILY_GOAL) {
+      bigCelebrate();
+      setGoalToast(true);
+      setTimeout(() => setGoalToast(false), 2500);
+    }
     const newFirstTry = firstTryCount + (firstTryCorrect ? 1 : 0);
     setFirstTryCount(newFirstTry);
 
@@ -72,8 +78,9 @@ export function Learn() {
           </h2>
           <p className="mb-5 text-xl text-slate-500 dark:text-slate-400">סיימת את השיעור — זה מה שחשוב.</p>
           <div className="mb-6 flex justify-center">
-            <Stars count={stars} size="text-5xl" />
+            <Stars count={stars} size="text-5xl" animate />
           </div>
+          <GoalToast show={goalToast} />
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button to="/">
               <IconHome size={20} />
@@ -124,6 +131,19 @@ export function Learn() {
         onNext={handleNext}
         nextLabel={index + 1 < lesson.length ? 'לשאלה הבאה' : 'סיום השיעור'}
       />
+      <GoalToast show={goalToast} />
+    </div>
+  );
+}
+
+// Celebratory banner when the daily goal is reached mid-session.
+function GoalToast({ show }) {
+  if (!show) return null;
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-20 z-40 flex justify-center px-4" aria-hidden="true">
+      <div className="animate-bounce-in rounded-2xl bg-amber-50 px-6 py-3 text-center text-lg font-black text-amber-600 shadow-xl ring-2 ring-amber-300 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-400">
+        היעד היומי הושלם! 🎯
+      </div>
     </div>
   );
 }

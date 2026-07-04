@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { speak, speechSupported } from '../lib/speech';
 import { gw } from '../lib/gender';
-import { playCorrect, playWrong } from '../lib/sound';
+import { playCorrect, playWrong, playStreak, playLevelUp } from '../lib/sound';
 import { celebrate } from './confetti';
+import { ComboToast } from './ComboToast';
+import { bump as bumpCombo, reset as resetCombo, comboTier } from '../lib/combo';
 import { Button } from './Button';
 import { IconVolume, IconLightbulb, IconCircle, IconCheck } from './Icons';
 
@@ -37,6 +39,7 @@ export function QuestionCard({
   const [shakeId, setShakeId] = useState(null);
   const [floatPoints, setFloatPoints] = useState(null);
   const [bonus, setBonus] = useState(false);
+  const [comboToast, setComboToast] = useState(null);
   const [explainText, setExplainText] = useState(question.explanation || '');
   const [explainLoading, setExplainLoading] = useState(false);
   const [explainError, setExplainError] = useState('');
@@ -75,18 +78,34 @@ export function QuestionCard({
         onBonus(pts); // double it
         setBonus(true);
         setFloatPoints(pts * 2);
-        setTimeout(() => setBonus(false), 1500);
-      } else if (pts > 0) {
-        setFloatPoints(pts);
+        playLevelUp(); // dramatic surprise fanfare
+        setTimeout(() => setBonus(false), 1800);
+      } else {
+        if (pts > 0) setFloatPoints(pts);
+        playCorrect();
       }
-      if (pts > 0) setTimeout(() => setFloatPoints(null), 1200);
-      playCorrect();
+      if (pts > 0) setTimeout(() => setFloatPoints(null), 1300);
       celebrate();
+
+      // COMBO: consecutive first-try-correct answers earn escalating rewards.
+      if (firstTry) {
+        const streak = bumpCombo();
+        const tier = comboTier(streak);
+        if (tier) {
+          setComboToast(tier.text);
+          playStreak(streak);
+          if (tier.bonus > 0) onBonus?.(tier.bonus);
+          setTimeout(() => setComboToast(null), 1200);
+        }
+      } else {
+        resetCombo();
+      }
     } else {
       // Gentle: light shake, encouraging message, let her try again.
       setHadMistake(true);
       setWrongCount((n) => n + 1);
       setShakeId(optId);
+      resetCombo();
       onAward?.(question.id, false, firstTry);
       playWrong();
       setTimeout(() => setShakeId(null), 400);
@@ -135,7 +154,10 @@ export function QuestionCard({
 
           let cls =
             'flex min-h-[56px] items-center gap-3 rounded-xl border-2 px-4 py-3 text-right text-xl transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/40';
-          if (showCorrect) cls += ' border-green-400 bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300';
+          if (showCorrect) {
+            cls += ' border-green-400 bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300';
+            if (!examMode) cls += ' animate-correct-pop';
+          }
           else if (examMode && isSelected) cls += ' border-sky-400 bg-sky-50 text-sky-800 dark:bg-sky-500/15 dark:text-sky-300';
           else if (resolved) cls += ' border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500';
           else if (showHint) cls += ' border-green-300 bg-green-50 text-green-700 ring-2 ring-green-200 dark:bg-green-500/15 dark:text-green-300';
@@ -166,11 +188,24 @@ export function QuestionCard({
         })}
       </div>
 
-      {/* Floating +points (with surprise bonus) */}
+      {/* Escalating combo celebration — center screen, never blocks input */}
+      {!examMode && <ComboToast text={comboToast} />}
+
+      {/* Dramatic lucky ×2 burst — star-ring ping behind an amber banner */}
+      {bonus && (
+        <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 text-center" aria-hidden="true">
+          <div className="absolute left-1/2 top-1/2 -z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 animate-burst-ring rounded-full ring-4 ring-amber-300" />
+          <div className="animate-bounce-in rounded-2xl bg-amber-50 px-6 py-4 shadow-xl ring-2 ring-amber-300 dark:bg-amber-500/15 dark:ring-amber-400">
+            <div className="text-2xl font-black text-amber-600 dark:text-amber-300">🎁 בונוס מזל!</div>
+            <div className="text-lg font-bold text-amber-600 dark:text-amber-300">הנקודות הוכפלו!</div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating +points — big, springy */}
       {floatPoints !== null && (
-        <div className="pointer-events-none absolute left-1/2 top-28 z-10 -translate-x-1/2 animate-float-up text-center">
-          {bonus && <div className="text-xl font-extrabold text-amber-500">בונוס מזל! ✨ ×2</div>}
-          <div className={`text-3xl font-extrabold ${bonus ? 'text-amber-500' : 'text-green-500'}`}>
+        <div className="pointer-events-none absolute left-1/2 top-28 z-10 -translate-x-1/2 animate-float-up-big text-center">
+          <div className={`text-5xl font-black drop-shadow ${bonus ? 'text-amber-500' : 'text-green-500'}`}>
             +{floatPoints}
           </div>
         </div>

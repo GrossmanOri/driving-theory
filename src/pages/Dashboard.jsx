@@ -1,7 +1,7 @@
 import { getAllQuestions, getQuestionById, getQuestionsByTopic, getTopics } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { Card, CardLink } from '../components/Card';
-import { IconArrowLeft, IconFlame, IconSigns, IconStar } from '../components/Icons';
+import { IconArrowLeft, IconFlame, IconPencil, IconRotate, IconSigns, IconStar, IconTarget } from '../components/Icons';
 import { isDue } from '../lib/leitner';
 import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
 import { greeting } from '../lib/greeting';
@@ -81,10 +81,10 @@ export function Dashboard() {
           <p className="text-lg text-slate-500 dark:text-slate-400">אספת עד עכשיו</p>
           <p className="text-2xl font-extrabold text-slate-800 dark:text-slate-100">{mastered} שאלות 🏆</p>
           <div className="mt-2 flex gap-2 text-base font-bold">
-            <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1 text-slate-600 dark:border-slate-700 dark:text-slate-300">
+            <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-600 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
               <IconStar size={18} fill="currentColor" className="text-amber-400" /> {totalStars}
             </span>
-            <span className="inline-flex items-center rounded-full border border-slate-200 px-3 py-1 text-slate-600 dark:border-slate-700 dark:text-slate-300">
+            <span className="inline-flex items-center rounded-full border border-green-200 bg-green-50 px-3 py-1 text-green-600 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-300">
               {progress.points} נק׳
             </span>
           </div>
@@ -110,7 +110,9 @@ export function Dashboard() {
           </p>
         </div>
         <Card className="flex flex-col items-center justify-center">
-          <IconFlame size={32} className="text-orange-500" />
+          <span className="mb-1 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-500/15 dark:text-orange-300">
+            <IconFlame size={28} />
+          </span>
           <div className="text-3xl font-bold text-orange-500">{streak}</div>
           <div className="text-sm text-slate-500 dark:text-slate-400">ימים ברצף</div>
         </Card>
@@ -143,14 +145,23 @@ export function Dashboard() {
       <h2 className="mb-3 text-lg font-bold text-slate-800 dark:text-slate-100">מה הלאה</h2>
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <CardLink to="/review" className="!p-4 text-center">
+          <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-purple-600 dark:bg-purple-500/15 dark:text-purple-300">
+            <IconRotate size={20} />
+          </span>
           <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{dueCount}</div>
           <div className="text-base text-slate-600 dark:text-slate-300">לחזרה חכמה</div>
         </CardLink>
         <CardLink to="/mistakes" className="!p-4 text-center">
+          <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300">
+            <IconPencil size={20} />
+          </span>
           <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{progress.mistakes.length}</div>
           <div className="text-base text-slate-600 dark:text-slate-300">טעויות לתרגל</div>
         </CardLink>
         <Card className="!p-4 text-center">
+          <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-600 dark:bg-green-500/15 dark:text-green-300">
+            <IconTarget size={20} />
+          </span>
           <div className="text-3xl font-bold text-green-600 dark:text-green-400">
             {daily}/{DAILY_GOAL}
           </div>
@@ -187,7 +198,7 @@ export function Dashboard() {
             key={b.id}
             className={`flex flex-col items-center gap-1 rounded-xl border p-4 text-center ${
               b.unlocked
-                ? 'border-slate-200/70 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800'
+                ? 'border-amber-200 bg-amber-50 shadow-sm dark:border-amber-500/30 dark:bg-amber-500/10'
                 : 'border-slate-200/70 bg-slate-100 opacity-50 grayscale dark:border-slate-700 dark:bg-slate-800'
             }`}
           >

@@ -11,13 +11,19 @@ const pxForSize = {
   'text-5xl': 48,
 };
 
-export function Stars({ count, max = 3, size = 'text-3xl' }) {
+export function Stars({ count, max = 3, size = 'text-3xl', animate = false }) {
   const px = typeof size === 'number' ? size : pxForSize[size] || 32;
   return (
     <div className="flex gap-1" aria-label={`${count} מתוך ${max} כוכבים`}>
       {Array.from({ length: max }).map((_, i) =>
         i < count ? (
-          <IconStar key={i} size={px} fill="currentColor" className="animate-star-pop text-amber-400" />
+          <span
+            key={i}
+            className="inline-flex animate-star-pop"
+            style={animate ? { animationDelay: `${i * 150}ms`, animationFillMode: 'backwards' } : undefined}
+          >
+            <IconStar size={px} fill="currentColor" className="text-amber-400" />
+          </span>
         ) : (
           <IconStar key={i} size={px} className="text-slate-300 dark:text-slate-600" />
         )

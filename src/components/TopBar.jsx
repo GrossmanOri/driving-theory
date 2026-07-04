@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useProgressContext } from '../hooks/useProgressContext';
 import { useAuth } from '../hooks/useAuth';
@@ -13,6 +14,19 @@ export function TopBar() {
   const location = useLocation();
   const showBack = location.pathname !== '/';
   const level = levelInfo(progress.points);
+
+  // Pulse the points chip whenever the total goes up (dopamine feedback).
+  const prevPoints = useRef(progress.points);
+  const [pointsPulse, setPointsPulse] = useState(false);
+  useEffect(() => {
+    if (progress.points > prevPoints.current) {
+      setPointsPulse(true);
+      const t = setTimeout(() => setPointsPulse(false), 600);
+      prevPoints.current = progress.points;
+      return () => clearTimeout(t);
+    }
+    prevPoints.current = progress.points;
+  }, [progress.points]);
 
   return (
     <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 dark:border-slate-700 dark:bg-slate-900">
@@ -40,7 +54,11 @@ export function TopBar() {
         <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1 text-slate-600 dark:border-slate-700 dark:text-slate-300">
           <IconStar size={16} fill="currentColor" className="text-amber-400" /> {totalStars}
         </span>
-        <span className="hidden items-center rounded-full border border-slate-200 px-3 py-1 text-slate-600 sm:inline-flex dark:border-slate-700 dark:text-slate-300">
+        <span
+          className={`hidden items-center rounded-full border border-slate-200 px-3 py-1 text-slate-600 sm:inline-flex dark:border-slate-700 dark:text-slate-300${
+            pointsPulse ? ' animate-chip-pulse' : ''
+          }`}
+        >
           {progress.points} נק׳
         </span>
         <ThemeToggle />

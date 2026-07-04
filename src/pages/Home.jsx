@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { getAllQuestions, getLessons, getTopics } from '../data/loader';
 import { useProgressContext } from '../hooks/useProgressContext';
-import { Stars } from '../components/Stars';
 import { Card, CardLink } from '../components/Card';
 import {
   IconArrowLeft,
@@ -14,6 +13,7 @@ import {
   IconRotate,
   IconSettings,
   IconSigns,
+  IconStar,
   IconTarget,
   IconTrophy,
   IconZap,
@@ -22,16 +22,87 @@ import { DAILY_GOAL, getDailyCount } from '../lib/dailyGoal';
 import { cheer, greeting } from '../lib/greeting';
 import { challengeDoneToday } from '../lib/dailyChallenge';
 
+// Curated tint map — literal class strings so Tailwind v4 keeps them at build time.
 const MODES = [
-  { to: '/review', Icon: IconRotate, label: 'חזרה חכמה' },
-  { to: '/blitz', Icon: IconZap, label: 'בליץ דקה' },
-  { to: '/flashcards', Icon: IconLayers, label: 'כרטיסיות תמרורים' },
-  { to: '/focus', Icon: IconTarget, label: 'תרגול ממוקד' },
-  { to: '/mistakes', Icon: IconRotate, label: 'תרגול טעויות', badge: 'mistakes' },
-  { to: '/collection', Icon: IconSigns, label: 'אוסף התמרורים' },
-  { to: '/dashboard', Icon: IconChart, label: 'הלוח שלי' },
-  { to: '/settings', Icon: IconSettings, label: 'הגדרות' },
+  {
+    to: '/review',
+    Icon: IconRotate,
+    label: 'חזרה חכמה',
+    caption: 'לרענן את מה שלמדת',
+    chip: 'bg-sky-100 dark:bg-sky-500/15',
+    icon: 'text-sky-600 dark:text-sky-300',
+  },
+  {
+    to: '/blitz',
+    Icon: IconZap,
+    label: 'בליץ דקה',
+    caption: 'כמה תספיקו בדקה?',
+    chip: 'bg-amber-100 dark:bg-amber-500/15',
+    icon: 'text-amber-600 dark:text-amber-300',
+  },
+  {
+    to: '/flashcards',
+    Icon: IconLayers,
+    label: 'כרטיסיות תמרורים',
+    caption: 'תמרור, הפוך, פירוש',
+    chip: 'bg-indigo-100 dark:bg-indigo-500/15',
+    icon: 'text-indigo-600 dark:text-indigo-300',
+  },
+  {
+    to: '/focus',
+    Icon: IconTarget,
+    label: 'תרגול ממוקד',
+    caption: 'מחזקים את הנושא החלש',
+    chip: 'bg-rose-100 dark:bg-rose-500/15',
+    icon: 'text-rose-600 dark:text-rose-300',
+  },
+  {
+    to: '/mistakes',
+    Icon: IconRotate,
+    label: 'תרגול טעויות',
+    caption: 'הטעויות הופכות לחוזקות',
+    badge: 'mistakes',
+    chip: 'bg-purple-100 dark:bg-purple-500/15',
+    icon: 'text-purple-600 dark:text-purple-300',
+  },
+  {
+    to: '/collection',
+    Icon: IconSigns,
+    label: 'אוסף התמרורים',
+    caption: 'האוסף שלך גדל עם כל שליטה',
+    chip: 'bg-emerald-100 dark:bg-emerald-500/15',
+    icon: 'text-emerald-600 dark:text-emerald-300',
+    collection: true,
+  },
+  {
+    to: '/dashboard',
+    Icon: IconChart,
+    label: 'הלוח שלי',
+    caption: 'כל ההתקדמות במקום אחד',
+    chip: 'bg-cyan-100 dark:bg-cyan-500/15',
+    icon: 'text-cyan-600 dark:text-cyan-300',
+  },
+  {
+    to: '/settings',
+    Icon: IconSettings,
+    label: 'הגדרות',
+    caption: 'התאמה אישית',
+    chip: 'bg-slate-100 dark:bg-slate-500/15',
+    icon: 'text-slate-600 dark:text-slate-300',
+  },
 ];
+
+// Stable, de-duplicated sign imagery from the bank (first-N-unique).
+function uniqueSigns() {
+  const seen = new Set();
+  const out = [];
+  for (const q of getAllQuestions()) {
+    if (!q.imageUrl || seen.has(q.imageUrl)) continue;
+    seen.add(q.imageUrl);
+    out.push(q.imageUrl);
+  }
+  return out;
+}
 
 export function Home() {
   const { progress } = useProgressContext();
@@ -42,25 +113,50 @@ export function Home() {
   const daily = Math.min(getDailyCount(), DAILY_GOAL);
   const dailyDone = daily >= DAILY_GOAL;
 
+  const signs = uniqueSigns();
+  const signStrip = signs.slice(0, 6);
+  const collectionThumbs = signs.slice(0, 3);
+  const signCount = signs.length;
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">{greeting(progress.name)}</h1>
+      <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+        {greeting(progress.name)} <span className="align-middle">👋</span>
+      </h1>
       <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">{cheer(new Date().getDate())}</p>
+
+      {/* Sign strip: a taste of the real bank — tilted mini-cards that straighten on hover */}
+      {signStrip.length > 0 && (
+        <div className="mb-5 flex justify-center">
+          {signStrip.map((src, i) => (
+            <div
+              key={src}
+              className={`h-14 w-14 rounded-xl border border-slate-200/70 bg-white p-1 shadow-sm transition-transform duration-200 hover:rotate-0 dark:border-slate-700 ${
+                i % 2 === 0 ? 'rotate-3' : '-rotate-2'
+              } ${i > 0 ? '-ms-3' : ''}`}
+            >
+              <img src={src} alt="תמרור" loading="lazy" className="h-full w-full object-contain" />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Journey: the car drives (right → left) toward the flag as progress grows */}
       <div className="relative mb-5 h-10">
-        <div className="absolute top-1/2 h-2 w-full -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
+        <div className="absolute top-1/2 h-3 w-full -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
+        {/* dashed road center line */}
+        <div className="absolute top-1/2 right-1 left-1 -translate-y-1/2 border-t-2 border-dashed border-white/70 dark:border-slate-500" />
         <div
-          className="absolute top-1/2 right-0 h-2 -translate-y-1/2 rounded-full bg-sky-500 transition-all duration-700"
+          className="absolute top-1/2 right-0 h-3 -translate-y-1/2 rounded-full bg-sky-500 transition-all duration-700"
           style={{ width: `${pct}%` }}
         />
         <span
           className="absolute top-1/2 -translate-y-1/2 text-sky-600 transition-all duration-700 dark:text-sky-400"
-          style={{ left: `calc(${100 - pct}% - 12px)` }}
+          style={{ left: `calc(${100 - pct}% - 14px)` }}
         >
-          <IconCar size={24} />
+          <IconCar size={28} />
         </span>
-        <span className="absolute top-1/2 left-0 -translate-y-1/2 text-slate-400">
+        <span className="absolute top-1/2 left-0 -translate-y-1/2 text-amber-500">
           <IconFlag size={22} />
         </span>
       </div>
@@ -96,7 +192,7 @@ export function Home() {
       </div>
 
       {/* Daily challenge */}
-      <CardLink to="/daily" className="mb-5 flex items-center justify-between">
+      <CardLink to="/daily" className="mb-5 flex items-center justify-between transition hover:-translate-y-0.5">
         <div className="flex items-center gap-3">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300">
             <IconTarget size={26} />
@@ -115,65 +211,105 @@ export function Home() {
         )}
       </CardLink>
 
-      {/* Daily goal */}
-      <Card className="mb-5">
-        <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
-            {dailyDone ? 'כל הכבוד! סיימת את היעד היומי 🎉' : 'היעד היומי שלך'}
-          </span>
-          <span className="text-base font-bold text-amber-600 dark:text-amber-300">
-            {daily}/{DAILY_GOAL}
-          </span>
-        </div>
-        <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
-          <div
-            className="h-full rounded-full bg-amber-500 transition-all"
-            style={{ width: `${(daily / DAILY_GOAL) * 100}%` }}
-          />
-        </div>
-      </Card>
+      {/* Progress row: daily goal + overall, side by side on sm+ */}
+      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <Card>
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300">
+              <IconTarget size={22} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-base font-bold text-slate-700 dark:text-slate-200">
+                  {dailyDone ? 'היעד היומי הושלם 🎉' : 'היעד היומי'}
+                </span>
+                <span className="text-sm font-bold text-amber-600 dark:text-amber-300">
+                  {daily}/{DAILY_GOAL}
+                </span>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
+                <div
+                  className="h-full rounded-full bg-amber-500 transition-all"
+                  style={{ width: `${(daily / DAILY_GOAL) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300">
+              <IconTrophy size={22} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-base font-bold text-slate-700 dark:text-slate-200">ההתקדמות שלך</span>
+                <span className="text-sm font-bold text-sky-600 dark:text-sky-400">{pct}%</span>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
+                <div className="h-full rounded-full bg-sky-600 transition-all" style={{ width: `${pct}%` }} />
+              </div>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                {mastered} מתוך {total} תמרורים ושאלות
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
 
-      {/* Overall progress */}
-      <Card className="mb-6">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="text-lg font-bold text-slate-700 dark:text-slate-200">ההתקדמות שלך</span>
-          <span className="text-base font-bold text-sky-600 dark:text-sky-400">{pct}%</span>
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
-          <div className="h-full rounded-full bg-sky-600 transition-all" style={{ width: `${pct}%` }} />
-        </div>
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-          אספת {mastered} מתוך {total} תמרורים ושאלות 🏆
-        </p>
-      </Card>
-
-      {/* Topic map */}
+      {/* Topic map — lessons as a wall of numbered nodes */}
       <h2 className="mb-3 text-lg font-bold text-slate-800 dark:text-slate-100">הנושאים</h2>
       <div className="mb-6 grid gap-4">
         {topics.map((topic) => {
           const lessons = getLessons(topic.id);
           const shown = lessons.slice(0, 12); // big bank — show the first dozen
+          const doneCount = shown.filter(
+            (_, i) => (progress.stars[`${topic.id}:${i}`] ?? 0) > 0
+          ).length;
+          const topicPct = shown.length ? Math.round((doneCount / shown.length) * 100) : 0;
           return (
             <Card key={topic.id}>
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{topic.icon}</span>
-                  <span className="text-xl font-bold text-slate-800 dark:text-slate-100">{topic.name}</span>
+              <div className="mb-3 flex items-center gap-3">
+                <span className="text-2xl">{topic.icon}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-lg font-bold text-slate-800 dark:text-slate-100">{topic.name}</span>
+                    <span className="text-xs text-slate-400">
+                      {doneCount}/{shown.length}
+                    </span>
+                  </div>
+                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
+                    <div
+                      className="h-full rounded-full bg-sky-500 transition-all"
+                      style={{ width: `${topicPct}%` }}
+                    />
+                  </div>
                 </div>
-                <span className="text-sm text-slate-400">{lessons.length} שיעורים</span>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2.5">
                 {shown.map((_, i) => {
                   const key = `${topic.id}:${i}`;
                   const stars = progress.stars[key] ?? 0;
+                  const has = stars > 0;
                   return (
                     <Link
                       key={key}
                       to={`/learn/${topic.id}/${i}`}
-                      className="flex flex-col items-center gap-1 rounded-xl border border-slate-200/70 bg-white px-5 py-3 hover:border-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-sky-500"
+                      aria-label={`שיעור ${i + 1}`}
+                      className={`flex h-12 w-12 flex-col items-center justify-center gap-0.5 rounded-full border-2 font-bold transition hover:border-sky-400 ${
+                        has
+                          ? 'border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300'
+                          : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                      }`}
                     >
-                      <span className="text-lg font-bold text-sky-700 dark:text-sky-300">שיעור {i + 1}</span>
-                      <Stars count={stars} size="text-base" />
+                      <span className="text-base leading-none">{i + 1}</span>
+                      {has && (
+                        <span className="flex gap-0.5">
+                          {Array.from({ length: stars }).map((_, s) => (
+                            <IconStar key={s} size={10} fill="currentColor" className="text-amber-500" />
+                          ))}
+                        </span>
+                      )}
                     </Link>
                   );
                 })}
@@ -185,16 +321,35 @@ export function Home() {
 
       {/* Modes */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {MODES.map(({ to, Icon, label, badge }) => {
+        {MODES.map(({ to, Icon, label, caption, badge, chip, icon, collection }) => {
           const count = badge === 'mistakes' ? progress.mistakes.length : 0;
           return (
-            <CardLink key={to} to={to} className="flex items-center gap-4">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-sky-600 dark:bg-slate-700 dark:text-sky-400">
-                <Icon size={26} />
-              </span>
-              <span className="text-lg font-bold text-slate-800 dark:text-slate-100">{label}</span>
+            <CardLink key={to} to={to} className="flex items-center gap-4 transition hover:-translate-y-0.5">
+              {collection && collectionThumbs.length > 0 ? (
+                <span className="flex shrink-0 items-center -space-x-2 space-x-reverse">
+                  {collectionThumbs.map((src) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt="תמרור"
+                      loading="lazy"
+                      className="h-8 w-8 rounded-md border border-slate-200/70 bg-white object-contain p-0.5 dark:border-slate-700"
+                    />
+                  ))}
+                </span>
+              ) : (
+                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${chip} ${icon}`}>
+                  <Icon size={26} />
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="text-lg font-bold text-slate-800 dark:text-slate-100">{label}</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">
+                  {collection ? `${caption} · ${signCount}` : caption}
+                </div>
+              </div>
               {count > 0 && (
-                <span className="mr-auto rounded-full bg-purple-100 px-3 py-0.5 text-base font-bold text-purple-600 dark:bg-purple-500/15 dark:text-purple-300">
+                <span className="rounded-full bg-purple-100 px-3 py-0.5 text-base font-bold text-purple-600 dark:bg-purple-500/15 dark:text-purple-300">
                   {count}
                 </span>
               )}

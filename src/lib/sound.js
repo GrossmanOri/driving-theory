@@ -63,3 +63,18 @@ export function playLevelUp() {
   [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.1, 0.3, 'triangle'));
   vibrate([50, 40, 50, 40, 100]);
 }
+
+// Rising arpeggio for a combo streak. The whole run pitches up with the combo
+// tier `n`, so bigger streaks literally sound higher and more triumphant.
+export function playStreak(n) {
+  if (!soundEnabled()) return;
+  const semis = [0, 4, 7, 12, 16, 19]; // major-triad climb
+  const steps = Math.min(Math.max(n, 2), 6);
+  const shift = Math.min((n - 2) * 1.5, 9); // higher base for higher tiers
+  const base = 523.25 * Math.pow(2, shift / 12); // from C5 upward
+  for (let i = 0; i < steps; i++) {
+    const freq = base * Math.pow(2, semis[i] / 12);
+    tone(freq, i * 0.07, 0.16, 'triangle');
+  }
+  vibrate([25, 20, 40]);
+}
