@@ -1,4 +1,13 @@
-# לומדים תיאוריה 🚗
+# Driving Theory — לומדים תיאוריה 🚗
+
+[![Deploy](https://github.com/GrossmanOri/driving-theory/actions/workflows/deploy.yml/badge.svg)](https://github.com/GrossmanOri/driving-theory/actions/workflows/deploy.yml)
+
+**🔗 Live demo: [d15k3o15azwrkf.cloudfront.net](https://d15k3o15azwrkf.cloudfront.net)**
+
+Interactive Hebrew (RTL) web app for studying the Israeli driving-theory test — encouraging, visual, no pressure. Built with **React + Vite + Tailwind v4**, deployed on **AWS** (S3 + CloudFront) with automatic CI/CD via GitHub Actions on every push to `main`.
+
+---
+
 
 אפליקציה ללימוד מבחן התיאוריה (רישיון דרגה B), בנויה להיות אינטראקטיבית,
 מעודדת וויזואלית — בלי לחץ ובלי עונשים. כל הממשק בעברית, RTL.
